@@ -1,0 +1,122 @@
+* methods
+** predict
+-> preprocess 에서서 인풋들을 직접 파싱하는 과정이 있음
+FromProto로 미리 정의된 피쳐인지 지정된 시그니처와 대비해  확인함
+아웃풋 필터는 리스폰스에 아웃풋중에 원하는 결과만 담는 필터임
+
+*** predict_imple 과정
+1. 서버블 번들을 가져온다.
+2. 시그니처 데프를 찾아온다.
+3. 리스폰스에 모델 스벡 채운다.
+4. 런
+5. 포스트 프로세스 아웃풋
+
+
+** classify
+*** classification service 과정
+1. 서버블 번들을 가져온다.
+2. 이미 있는 classify 라는 시그니처를 찾는다.
+3. classifier_interface 를 만든다.
+4. 리스폰스에 모델 스펙을 채운다.
+5. 클래지파이 실행
+
+* mnist example
+** model
+1. place hodler로 example serizlized_tf_example 선언하고 tf_example parsing
+2. train_step 정의 ( x, w, b, y  variables, entropy, gradientDescentoptimizer)
+3. values, indices, prediction class 만든다.
+4. train_step 루프
+5. builder 선언 (export path)
+6. signature 정의- build_tensor_info 로 인풋 아웃풋 적음
+- classify -> input: serialized_tf_example, output: prediction_classes, values
+- prediction -> input: x, output: y
+7. singature 에 내용 설정 후 빌드
+
+*** data example <=> tensor form
+serialized_tf_example = tf.placeholder(tf.string, name='tf_example')
+feature_configs = {'x': tf.FixedLenFeature(shape=[784], dtype=tf.float32),}
+tf_example = tf.parse_example(serialized_tf_example, feature_configs)
+x = tf.identity(tf_example['x'], name='x')  # use tf.identity() to assign name
+*** reading tensor form data
+-> 모델에서
+mnist = mnist_input_data.read_data_sets(FLAGS.work_dir, one_hot=True)
+-> train step 에서
+batch = mnist.train.next_batch(50)
+train_step.run(feed_dict={x: batch[0], y_: batch[1]})
+
+-> read_data_sets
+
+
+-> 클라이언트에서
+test_data_set = mnist_input_data.read_data_sets(work_dir).test
+image, label = test_data_set.next_batch(1)
+request.inputs['images'].CopyFrom(
+tf.contrib.util.make_tensor_proto(image[0], shape=[1, image[0].size]))
+
+-> 서버에서 프로토콜 버퍼 형식으로 들어온것을 파싱해서 넣어줌
+- examplelist-> InputToSerializedexampletensor
+- predict ->  tensor.FromProto(input.second)
+
+*** classification sig
+  classification_inputs = tf.saved_model.utils.build_tensor_info(
+      serialized_tf_example)
+  classification_outputs_classes = tf.saved_model.utils.build_tensor_info(
+      prediction_classes)
+  classification_outputs_scores = tf.saved_model.utils.build_tensor_info(values)
+
+  classification_signature = (
+      tf.saved_model.signature_def_utils.build_signature_def(
+          inputs={
+              tf.saved_model.signature_constants.CLASSIFY_INPUTS:
+                  classification_inputs
+          },
+          outputs={
+              tf.saved_model.signature_constants.CLASSIFY_OUTPUT_CLASSES:
+                  classification_outputs_classes,
+              tf.saved_model.signature_constants.CLASSIFY_OUTPUT_SCORES:
+                  classification_outputs_scores
+          },
+          method_name=tf.saved_model.signature_constants.CLASSIFY_METHOD_NAME))
+*** prediction sig
+  tensor_info_x = tf.saved_model.utils.build_tensor_info(x)
+  tensor_info_y = tf.saved_model.utils.build_tensor_info(y)
+
+  prediction_signature = (
+      tf.saved_model.signature_def_utils.build_signature_def(
+          inputs={'images': tensor_info_x},
+          outputs={'scores': tensor_info_y},
+          method_name=tf.saved_model.signature_constants.PREDICT_METHOD_NAME))
+*** sigdef map
+  legacy_init_op = tf.group(tf.tables_initializer(), name='legacy_init_op')
+  builder.add_meta_graph_and_variables(
+      sess, [tf.saved_model.tag_constants.SERVING],
+      signature_def_map={
+          'predict_images':
+              prediction_signature,
+          tf.saved_model.signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY:
+              classification_signature,
+      },
+      legacy_init_op=legacy_init_op)
+
+  builder.save()
+
+
+** client (predict)
+1. imate, lable 데이터를 읽어온다.
+2. 이미지는 make_tensor_proto로 인풋에 카피함.
+3. result_future -> result_future.add_done_callback 에서 읽어온 데이터 처리
+   response = numpy.array(result.future.result().outputs.['scores'].float_val)
+
+
+* util
+InputToSerializedExampleTensor
+string 을 텐서로 변환함
+여기서 스트링은 example이라고 정의된 프로토콜 버퍼인데
+https://github.com/tensorflow/tensorflow/blob/master/tensorflow/core/example/example.proto 참조
+
+컨텍스트는 로캘 같은거임..example 하나는 한 row라고 보면 되고, 피처 리스트임.
+각 피쳐는 k-v로 구성되는데 v는 특정 타입의 리스트임.
+
+* 데이터 저장형식?
+feature list 에 밸류들은 다 리스트인데.. 티베로는 rdb이고 저장은??
+classify, regress는 example proto buffer 형식으로 받는데… 이거 빌딩 꼭 해야돼? predict로 사용할 수 있지?
