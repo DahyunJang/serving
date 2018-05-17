@@ -1,0 +1,28 @@
+* componets
+- clinet
+- request gateway
+- servers
+- model producer
+- IaaS master
+- file storage for models, input data, output data
+
+* apis
+** request router - client
+- GetModelMetadataRequest/Response
+- PredictionService
+** request router - servers
+- CanServeModelRequest/Response
+- GetModelStatusRequest/Response
+- HandleReloadConfigRequest/Response
+- PredictionService
+** request router - model producer
+- EnrollModel
+- EnrollFileType : file type 을 등록하고 해당 타입과 npy converting 파이썬 스크립트를 등록한다.
+** request router - IaaS Master
+- AddModelServer
+** request router internal
+- ProbeLatency
+** PredictionService
+*** PredictFile
+input file path / (output file path)
+file <-> protoBuff  converter
