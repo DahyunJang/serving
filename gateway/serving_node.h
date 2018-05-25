@@ -6,6 +6,8 @@
 
 #include "grpc++/create_channel.h"
 #include "grpc++/security/credentials.h"
+
+#include "tnesorflow/core/lib/strings/strcat.h"
 #include "tensorflow/core/lib/core/errors.h"
 #include "tensorflow/core/lib/core/status.h"
 #include "tensorflow/core/paltform/mutex.h"
@@ -23,7 +25,7 @@ using tensorflow::serving::PredictionService;
 namespace tensorflow {
 namesapce serving{
 
-class ModelId{
+Class ModelId{
 public:
     ModelId(string& name, int64 version):
     name_(name), version_(version){}
@@ -32,12 +34,33 @@ public:
     name_(model_spec.name()), version_(model_spec.version().value()){}
 
 
-    /* vector find 에서 사용되는거 맞지? */
-    bool operator==(const ModelId& rhs){
-        return ((this.name_ == rhs.name_)
-                && (this.version_ == rhs.version_));
+    string DebugString() const {
+        return strings::StrCat("{name: ", name, " version: ", version, "}");
     }
 
+    /* for container.. */
+    bool operator==(const ModelId& b) const{
+        return ((this.name_ == b.name_)
+                && (this.version_ == b.version_));
+    }
+
+    /* for container.. */
+    bool operator<(const ModelId& b) const{
+        return ((this.name_ < b.name_)|| /* string에 comparator 구현되어 있지? */
+                (this.name_ == b.name_ &&
+                 this.version_ < b.version_));
+    }
+
+    bool IsSameModelName(cons){
+        return
+    }
+    const string GetName(){
+        return name_;
+    }
+
+    const int64 GetVersion(){
+        return version_;
+    }
 private:
     const string name_;            /* model_name */
     const int64 version_;          /* model_version */
@@ -59,15 +82,19 @@ public:
                                       grpc::InsecureChannelCredentials())));
     }
 
-    bool operator==(const ServingNode& rhs){
-        return (this.server_port_ == rhs.server_port_)
+    bool operator==(const ServingNode& b){
+        return (this.server_port_ == b.server_port_)
+    }
+
+    bool operator<(const ServingNode& b){
+        return (this.server_port_ < b.server_port_)
     }
 
     Status FilePredict(const FilePredictRequest &request,
                        FilePredictResponse *response){
         const ModelSpec& model_spec = request.model_spec();
-
-        if (IsServingModel(model_spec)){
+        const Model_id model_id(model_spec);
+        if (IsServingModel(model_id)){
             return  FilePredict_(request, response);
         }
         else{
@@ -78,31 +105,18 @@ public:
         }
     }
 
-    // get loaded models info
-    Status RestoreModelIds(){
-        Status status;
-
-        GetModelStatusRequest request;
-        GetModelStatusResponse response;
-
-        status = GetModelStatus_(request, &response);
-        if () {
-            for (){
-                ModelVersionStatus* version_status
-                    = response.get_model_version_status();// TODO 함수이름뭐져 =_=?
-                //newly list up models and replace old one.
-            }
-
-        }
-    }
-
-    Status LoadModel(ModelSpec& model_spec){
-        if (!IsServingModel(model_spec)){
+    Status LoadModel(const ModelId& model_id) {
+        if (!IsServingModel(model_id)){
             Status status;
 
             ReloadConfigRequest request;
             ReloadConfigResponse response;
-            //TODO build request
+
+            /* //TODO build request */
+            /* ModelSpec* model_spec = request.mutable_model_spec(); */
+            /* model_spec->set_name(model_id.GetName()); */
+            /* model_spec->mutable_version()->set_value(model_id.GetVersion()); */
+
             status = HandleReloadConfigRequest_(request, &response);
             //TODO response 처리 ?
         }
@@ -110,8 +124,9 @@ public:
             return Status::OK();
         }
     }
-    Status UnloadModel(ModelSpec& model_spec){
-        if (IsServingModel(model_spec)){
+
+    Status UnloadModel(const ModelId& model_id){
+        if (IsServingModel(model_id)){
             Status status;
 
             ReloadConfigRequest request;
@@ -166,11 +181,26 @@ private:
         model_ids_.remove(model_ids_.begin(), model_ids_.end(), model_id);
     }
 
-    bool IsServingModel(ModelSpec& model_spec)
+    Status UpdateModelIds(void)
+        LOCKS_EXCLUDED(mu_)
+    {
+        Status status = ;
+        int model_cnt = ;
+        {
+            mutex_lock l(mu_);
+            modle_ids_.clear();
+            for (int i = 0; i < model_cnt; i++ ) {
+                AddModelId
+            }
+        }
+
+
+    }
+
+    bool IsServingModel(ModelId& model_id)
         LOCKS_EXCLUDED(mu_)
     {
         mutex_lock l(mu_);
-        ModelId model_id(model_spec);
         model_ids_.find(model_ids_.begin(), model_ids_.end(), model_id);
     }
 

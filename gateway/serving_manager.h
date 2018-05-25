@@ -19,8 +19,8 @@ class ServingManager {
 public:
 
     //method without serving node specification
-    Status LoadModel (ModelSpec& model_spec){
-        ServingNode serving_node = GetServingNode(model_spec);
+    Status LoadModel (ModelConfig& model_config){
+        ServingNode serving_node = GetServingNode();
         if () {
             //TODO build request message
             //TODO  and forward it.
@@ -29,7 +29,7 @@ public:
     }
 
     //method without serving node specification
-    Status UnloadModel (ModelSpec& model_spec){
+    Status UnloadModel (ModelConfig& model_config){
         //TODO build request message
         //TODO  and forward it.
 
@@ -43,7 +43,7 @@ public:
         // dump list serving_pair
     }
 
-    Status AddServinNode(){
+    Status AddServingNode(){
         //1. call add node api from IaaS Master
         //2. add the node related pairs in serving_mapper
         //3. add the node from serving_node_pool
