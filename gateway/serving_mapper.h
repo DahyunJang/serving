@@ -21,13 +21,6 @@ namesapce serving{
 class ServingMapper {
 public:
 
-
-    Status DumpModelLists (){
-        // dump list serving_pair
-    }
-
-
-
     Status AddServingPair (ServingNode& serving_node, ModelSpec &model_spec){
         // add itself to serving_map_
     }
@@ -44,11 +37,11 @@ public:
         }
     }
 
-    Status RemoveServingPairOfNode (ServningNode& serving_node){
+    Status RemoveServingPairOfNode (const ServingNode& serving_node){
 
     }
 
-    ServingNode GetServingNode (ModelSpec& model_spec){
+    ServingNode GetServingNode (const ModelId& model_id){
 
     }
 

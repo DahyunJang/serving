@@ -26,7 +26,8 @@ public:
         LOCKS_EXCLUDED(mu_)
     {
         mutex_lock l(mu_);
-        serving_nodes_.push_back(serving_node);
+        if (find() != .end())
+            serving_nodes_.push_back(serving_node);
     }
     Status RemoveServingNode(ServingNode &serving_node)
         LOCKS_EXCLUDED(mu_)
@@ -37,7 +38,9 @@ public:
     }
 
     //TODO position
-    ServingNode GetServingNodeCandidate(){
+    ServingNode GetServingNodeCandidate()
+        LOCKS_EXCLUDED(mu_)
+    {
         //returns
         //currently, it has no proper policy.
 
