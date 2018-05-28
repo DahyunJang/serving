@@ -71,11 +71,12 @@ public:
 
     friend bool operator<(const ServingNode& a, const ServingNode& b);
 
-    Status FilePredict(const FilePredictRequest &request,
-                       FilePredictResponse *response);
+    Status FilePredict(const ModelId& model_id,
+                       const string& input_data_file_path,
+                       const string& output_data_file_path);
 
-
-    /* TODO Make sure the model server support this api.
+    /* TODO REQUIRED
+       Make sure the model server support this api.
        tensorflow only support latest version load in 'server_core'.
      */
     Status LoadSpecificModel(const ModelId& model_id);

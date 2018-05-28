@@ -13,9 +13,8 @@ namesapce serving{
 
 
 /* ----------------------------------------------------------------- */
-//version should be positive value.
-//version 0 means not specified.
-ModelId::ModelId(string& name, int64 version = 0):
+//version should be positive value. where should I check?
+ModelId::ModelId(string& name, int64 version):
 name_(name), version_(version){}
 
 
@@ -48,12 +47,30 @@ ServingNode::ServingNode(const string server_port,
 }
 
 
-Status ServingNode::FilePredict(const FilePredictRequest &request,
-                   FilePredictResponse *response){
-    const ModelSpec& model_spec = request.model_spec();
-    const Model_id model_id(model_spec);
+Status ServingNode::FilePredict(const ModelId& model_id,
+                                const string& input_data_file_path,
+                                const string& output_data_file_path){
+
+    //ModelId model_id = ; get modelId from
     if (IsServingModel(model_id)){
-        return  FilePredict_(request, response);
+        Status status;
+
+        FilePredictRequest request;
+        FilePredictResponse response;
+
+
+        // TODO REQUIRED build request and response
+        ModelSpec& model_spec = request.model_spec(); //
+        model_spec.set;//
+            reqeust.set_input_file_path(input_data_file_path);//
+            reqeust.set_output_file_path(output_data_file_path);//
+        //...
+
+        status = FilePredict_(request, response);
+
+        // TODO REQUIRED handle response?
+
+        return status;
     }
     else{
         return tensorflow::errors::NotFound("Could not find the version ",
@@ -81,7 +98,7 @@ Status ServingNode::LoadSpecificModel(const ModelId& model_id,
         ModelConfig* model_config = request.mutable_model;///
 
 
-        /* TODO */
+        /* TODO REQUIRED */
         model_config->set_name();
         model_config->;
         Model* model_vesion_policy = model_config->mutalbe_();//type ???
@@ -90,6 +107,8 @@ Status ServingNode::LoadSpecificModel(const ModelId& model_id,
             ->set_versions();// repeated 처리 ㅠㅠ
 
         status = HandleReloadConfigRequest_(request, &response);
+
+        // TODO REQUIRED handle response?
 
         if (status.ok()){
             AddModelId(model_id);
@@ -112,8 +131,13 @@ Status ServingNode::UnloadSpecificModel(const ModelId& model_id){
 
         /* Unload only one model per once. */
 
-        //TODO build request
+        //TODO REQUIRED build request
+        //
+
         status = HandleReloadConfigRequest_(request, &response);
+
+        // TODO REQUIRED handle response?
+
         if (status.ok()){
             RemoveModelId(model_id);
         }
@@ -143,7 +167,10 @@ Status ServingNode::HandleReloadConfigRequest_(const ReloadConfigRequest& reques
 void ServingNode::AddModelId(const ModelId& model_id)
 {
     mutex_lock l(mu_);
-    model_ids_.push_back(model_id);
+    if (std::find(model_ids_.begin(), model_ids_.end(), model_id)
+        == model_ids_.end()){
+        model_ids_.push_back(model_id);
+    }
 }
 
 void ServingNode::RemoveModelId(const ModelId& model_id)
