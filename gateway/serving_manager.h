@@ -13,7 +13,8 @@ namesapce serving{
 
 
 // For now, assume there is only one node for one model
-
+// comm with IaaS master is out of manager scope.
+// Manager should specify the version of model if model version is not specified.
 
 class ServingManager {
 public:
@@ -39,20 +40,15 @@ public:
 
     }
 
-    Status DumpModelLists (){
-        // dump list serving_pair
+    Status AddServingNode(){
+        //1. add the node related pairs in serving_mapper
+        //2. add the node from serving_node_pool
     }
 
-    Status AddServingNode(){
-        //1. call add node api from IaaS Master
-        //2. add the node related pairs in serving_mapper
-        //3. add the node from serving_node_pool
-    }
 
     Status DeleteServingNode(){
-        //1. call remove node api from IaaS Master
-        //2. remove the node related pairs in serving_mapper
-        //3. remove the node from serving_node_pool
+        //1. remove the node related pairs in serving_mapper
+        //2. remove the node from serving_node_pool
 
     }
 

@@ -22,43 +22,19 @@ namesapce serving{
 class ServingNodePool {
 public:
     Status AddServingNode(ServingNode &serving_node)
-        LOCKS_EXCLUDED(mu_)
-    {
-        mutex_lock l(mu_);
-        if (find(serving_nodes_.begin(), serving_nodes_.end(), serving_node)
-            == serving_nodes_.end()){
-            serving_nodes_.push_back(serving_node);
-        }
-    }
+        LOCKS_EXCLUDED(mu_);
+
     Status RemoveServingNode(ServingNode &serving_node)
-        LOCKS_EXCLUDED(mu_)
-    {
-        mutex_lock l(mu_);
-        serving_nodes_.remove(serving_nodes_.begin(), serving_nodes_.end(),
-                              serving_node);
-    }
+        LOCKS_EXCLUDED(mu_);
 
-    //TODO return type?
-    ServingNode& GetServingNodeCandidate()
-        LOCKS_EXCLUDED(mu_)
-    {
-        //currently, it deos not consider acutral resource.
-        //Just use RR policy
-        if (serving_nodes_iter_ == serving_nodes_.end()){
-            serving_nodes_iter_ = serving_nodes_.begin();
-        }
-
-        serving_nodes_iter_++;
-
-        return *serving_nodes_iter_;
-    }
-
+    Status GetServingNodeCandidate(ServingNode* serving_node_cand)
+        LOCKS_EXCLUDED(mu_);
 private:
     /// TODO
     //MonitorServingNode();
     mutex mu_;
     std::vector<ServingNode> serving_nodes_ GUARDED_BY(mu_);
-    std::vector<ServingNode>::iterator serving_nodes_iter_
+    std::vector<ServingNode>::iterator cur_serving_nodes_iter_
         = serving_nodes_.begin();
 }
 
