@@ -6,7 +6,10 @@
 #include "tensorflow/core/lib/core/status.h"
 
 #include "gateway/serving_node.h"
-// protocol buffer?
+#include "gateway/model_id.h"
+#include "gateway/serving_node_pool.h"
+#include "gateway/serving_handle.h"
+
 
 namespace tensorflow {
 namesapce serving{
@@ -18,7 +21,12 @@ namesapce serving{
 
 class ServingManager {
 public:
+    /*  */
+    Status FilePredict() {//request and response in json form to proto?
 
+    }
+
+    /* 모델 로딩 관리 */
     //method without serving node specification
     Status LoadModel (ModelConfig& model_config){
         ServingNode serving_node = GetServingNode();
@@ -35,26 +43,32 @@ public:
         //TODO  and forward it.
 
     }
-
-    Status FilePredict() {//request and response in json form to proto?
-
+    /* servign node 관리  */
+    Status AddServingNode(const string& server_port, ){
+        auto sp_serving_node = make_shared<ServingNode>(server_port, );
+        serving_node_pool_.AddServingNode(sp_serving_node);
+        UpdateServingHandles();
     }
-
-    Status AddServingNode(){
-        //1. add the node related pairs in serving_mapper
-        //2. add the node from serving_node_pool
-    }
-
 
     Status DeleteServingNode(){
-        //1. remove the node related pairs in serving_mapper
-        //2. remove the node from serving_node_pool
-
+        //0. local var serving node
+        //1. remove the node from serving_node_poo
+        UpdateServingHandles();
     }
+
+
+    /* monitoring */
 
 private:
     ServingNodePool serving_node_pool_;
-    ServingMapper serving_mapper_;
+    ServingHandlesManager serving_handles_;
+
+    void UpdateServingHandles(){
+        for (const SP_ServingNode& sp_serving_node :serving_node_pool_.?) {
+            serving_handles_.AddServingHandles(sp_serving_node);
+        }
+        serving_handles_.Update();
+    }
 }
 
 

@@ -12,38 +12,57 @@ namespace tensorflow {
 namesapce serving{
 
 
-/* ----------------------------------------------------------------- */
-//version should be positive value. where should I check?
-ModelId::ModelId(string& name, int64 version):
-name_(name), version_(version){}
-
-
-ModelId::ModelId(const ModelSpec& model_spec):
-name_(model_spec.name()), version_(model_spec.version().value()){}
-
-
-string ModelId::DebugString() const {
-    return strings::StrCat("{name: ", name, " version: ", version, "}");
-}
-
-const string ModelId::GetName(){
-    return name_;
-}
-
-const int64 ModelId::GetVersion(){
-    return version_;
-}
-
-/* ----------------------------------------------------------------- */
-
 /* server_port is [server ip]:[server] */
-ServingNode::ServingNode(const string server_port,
-                         const string default_model_base_path)
+ServingNode::ServingNode(const string& server_port,
+                         const string& model_base_path = "/tmp/models/")
     :server_port_(server_port),
-    default_model_base_path_(default_model_base_path){
-    stub_(PredictionService::NewStub(
-              grpc::CreateChannel(server_port,
+    model_base_path_(model_base_path){
+        stub_(PredictionService::NewStub(
+                  grpc::CreateChannel(server_port,
                                   grpc::InsecureChannelCredentials())));
+}
+
+
+void ServingNode::AddModelId(const ModelId& model_id)
+{
+    mutex_lock l(mu_);
+    if (std::find(model_ids_.begin(), model_ids_.end(), model_id)
+        == model_ids_.end()){
+        model_ids_.push_back(model_id);
+    }
+}
+
+void ServingNode::RemoveModelId(const ModelId& model_id)
+{
+    mutex_lock l(mu_);
+    model_ids_.remove(model_ids_.begin(), model_ids_.end(), model_id);
+}
+
+
+
+Status ServingNode::ReloadModels(){
+    // model_ids_ 로 리퀘스트 빌드
+
+    return ;
+}
+
+
+Status ServingNode::UpdateModelStatus(const ModelId& model_id){
+    // 해당 모델이 정상적으로 로딩되었는지 확인.
+    // 버전 정보는 어떻게 하지? 무시해?
+    return;
+}
+
+// TODO how to handle error?
+Status ServingNode::UpdateModelStatus(){
+    // update all
+    for_each(auto model_id_iter : model_ids_){
+        UpdateModelStatus(*model_id_iter);
+    }
+}
+
+const std::vector<ModelId>& GetModelIds() const{
+    return model_ids_;
 }
 
 
@@ -80,76 +99,20 @@ Status ServingNode::FilePredict(const ModelId& model_id,
     }
 }
 
-Status ServingNode::LoadSpecificModel(const ModelId& model_id,
-                                      const string& model_base_path
-                                      = default_model_base_path_) {
-    /* Load only one model per once. */
-    /* Only support specific load */
 
-    if (!IsServingModel(model_id)){
-        Status status;
-
-        ReloadConfigRequest request;
-        ReloadConfigResponse response;
-
-        //request -> ModelServerConfig config ->
-        //oneof Config ModelConfigList model_config_list
-
-        ModelConfig* model_config = request.mutable_model;///
-
-
-        /* TODO REQUIRED */
-        model_config->set_name();
-        model_config->;
-        Model* model_vesion_policy = model_config->mutalbe_();//type ???
-        // oneof policy_choice 처리?? -> specific-> repeated in64 versions
-        model_version_policy->mutable_policy_choice()->mutable_specific()
-            ->set_versions();// repeated 처리 ㅠㅠ
-
-        status = HandleReloadConfigRequest_(request, &response);
-
-        // TODO REQUIRED handle response?
-
-        if (status.ok()){
-            AddModelId(model_id);
-        }
-
-        return status;
-    }
-    else { // already servable
-        return Status::OK();
-    }
+// TODO
+Status ServingNode::GetModelStatus_(request, response){
+    ClientContet context;
+    return stub_->(&context, request, response);
 }
 
 
-Status ServingNode::UnloadSpecificModel(const ModelId& model_id){
-    if (IsServingModel(model_id)){
-        Status status;
-
-        ReloadConfigRequest request;
-        ReloadConfigResponse response;
-
-        /* Unload only one model per once. */
-
-        //TODO REQUIRED build request
-        //
-
-        status = HandleReloadConfigRequest_(request, &response);
-
-        // TODO REQUIRED handle response?
-
-        if (status.ok()){
-            RemoveModelId(model_id);
-        }
-
-        return status;
-    }
-    else {
-        return Status::OK();
-    }
+Status ServingNode::HandleReloadConfigRequest_(const ReloadConfigRequest& request,
+                                               ReloadConfigResponse *response){
+    ClientContext context;
+    return stub_->HandleReloadConfigRequest(&context, reqeust, response);
 }
 
-//just forwrard request
 Status ServingNode::FilePredict_(const FilePredictRequest &request,
                     FilePredictResponse *response){
     ClientContext context;
@@ -157,29 +120,8 @@ Status ServingNode::FilePredict_(const FilePredictRequest &request,
 }
 
 
-Status ServingNode::HandleReloadConfigRequest_(const ReloadConfigRequest& request,
-                                  ReloadConfigResponse *response){
-    ClientContext context;
-    return stub_->HandleReloadConfigRequest(&context, reqeust, response);
-}
 
-
-void ServingNode::AddModelId(const ModelId& model_id)
-{
-    mutex_lock l(mu_);
-    if (std::find(model_ids_.begin(), model_ids_.end(), model_id)
-        == model_ids_.end()){
-        model_ids_.push_back(model_id);
-    }
-}
-
-void ServingNode::RemoveModelId(const ModelId& model_id)
-{
-    mutex_lock l(mu_);
-    model_ids_.remove(model_ids_.begin(), model_ids_.end(), model_id);
-}
-
-bool ServingNode::IsServingModel(ModelId& model_id)
+bool ServingNode::IsServingModel_(ModelId& model_id)
 {
     mutex_lock l(mu_);
     model_ids_.find(model_ids_.begin(), model_ids_.end(), model_id);
