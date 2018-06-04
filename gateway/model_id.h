@@ -53,4 +53,4 @@ bool operator<(const ModelId &a, const ModelId& b){
 } //serving
 } // tensorflow
 
-#endif SERVING_GATEWAY_MODEL_ID_H_
+#endif //SERVING_GATEWAY_MODEL_ID_H_

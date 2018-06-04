@@ -89,4 +89,4 @@ private:
 } //namespace serving
 } //namespace tensorflow
 
-#endif SERVING_GATEWAY_SERVING_HANDLE_H_
+#endif //SERVING_GATEWAY_SERVING_HANDLE_H_

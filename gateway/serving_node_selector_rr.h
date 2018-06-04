@@ -1,3 +1,6 @@
+#ifndef SERVING_GATEWAY_SERVING_NODE_SELECTOR_RR_H_
+#define SERVING_GATEWAY_SERVING_NODE_SELECTOR_RR_H_
+
 #include "serving_node_selector.h"
 
 class ServingNodeSelectorRR : public ServingNodeSelectorBase{
@@ -10,3 +13,5 @@ public:
 private:
     int RR_counter_;
 }
+
+#endif

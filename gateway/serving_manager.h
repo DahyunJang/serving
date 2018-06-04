@@ -76,4 +76,4 @@ private:
 } //namespace serving
 } //namespace tensorflow
 
-#endif SERVING_GATEWAY_SERVING_MANAGER_H_
+#endif //SERVING_GATEWAY_SERVING_MANAGER_H_

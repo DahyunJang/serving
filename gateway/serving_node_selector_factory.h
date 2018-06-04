@@ -16,4 +16,4 @@ class ServingNodeSelectorFactory {
         Create(ServingNodeSelectorType type = ServingNodeSelectorType::RR);
 }
 
-#endif SERVING_GATEWAY_SERVING_NODE_SELECTOR_FACTRORY_H_
+#endif //SERVING_GATEWAY_SERVING_NODE_SELECTOR_FACTRORY_H_

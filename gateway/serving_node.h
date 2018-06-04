@@ -102,4 +102,4 @@ using SP_ServingNodeVectorItr = std::vector<SP_ServingNode>::iterator;
 } //serving
 } // tensorflow
 
-#endif SERVING_GATEWAY_SERVING_NODE_H_
+#endif //SERVING_GATEWAY_SERVING_NODE_H_

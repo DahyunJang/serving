@@ -131,5 +131,3 @@ bool ServingNode::IsServingModel_(ModelId& model_id)
 
 } //serving
 } // tensorflow
-
-#endif SERVING_GATEWAY_SERVING_NODE_H_

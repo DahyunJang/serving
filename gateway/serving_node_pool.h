@@ -46,4 +46,4 @@ private:
 } //namespace tensorflow
 } //namespace serving
 
-#endif SERVING_GATEWAY_SERVING_NODE_POOL_H_
+#endif //SERVING_GATEWAY_SERVING_NODE_POOL_H_
