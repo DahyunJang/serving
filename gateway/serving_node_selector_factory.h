@@ -13,18 +13,7 @@ enum class ServingNodeSelectorType {
 
 class ServingNodeSelectorFactory {
     static std::unique_ptr<ServingNodeSelector>
-        Create(ServingNodeSelectorType type = ServingNodeSelectorType::RR){
-
-        unique_ptr<ServingNodeSelector> selector = nullptr;
-        switch(type) {
-        case ServingNodeSelectorType::RR :
-            selector = make_unique<ServingNodeSelectorRR>();
-            break;
-        }
-
-        return selector;
-    }
+        Create(ServingNodeSelectorType type = ServingNodeSelectorType::RR);
 }
-
 
 #endif SERVING_GATEWAY_SERVING_NODE_SELECTOR_FACTRORY_H_
