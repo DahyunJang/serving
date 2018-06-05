@@ -1,24 +1,13 @@
-#ifndef SERVING_GATEWAY_SERVING_HANDLE_H_
-#define SERVING_GATEWAY_SERVING_HANDLE_H_
+#include "gateway/serving_handle.h"
 
-
-#include <map>
-
-#include "gateway/model_id.h"
-#include "gateway/serving_node.h"
-#include "gateway/serving_node_selector.h"
-#include "gateway/"
 
 namespace tensorflow {
 namesapce serving{
 
-struct ServingHandle{
-public:
-    ModelId model_id;
-    std::unique_ptr<ServingNodeSelector> selector;
-    SP_ServingNodeVector sp_serving_nodes;
-}
-
+/*
+  fast read dynamic ptr 못씀.
+  EM 구조에서 같은 스레드에서 update, read 같이 불릴 수 있음.
+*/
 
 
 /* ServingHandles holds model-servingnode information*/
@@ -60,5 +49,3 @@ private:
 
 } //namespace serving
 } //namespace tensorflow
-
-#endif //SERVING_GATEWAY_SERVING_HANDLE_H_

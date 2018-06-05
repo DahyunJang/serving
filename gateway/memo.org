@@ -1,0 +1,13 @@
+* fast read dynamic ptr
+ fast read dynamic ptr 못씀.
+ EM 구조에서 같은 스레드에서 update, read 같이 불릴 수 있음.
+* lock thread annotation
+ 참고로 thread_annotation은 컴파일 체크용이고
+ mu_current_는 shared로 걸리는데,
+ 내부에서 락을 잡으므로 priviously required는 아니고(shared_locks_required)
+ 다른 데서도 미리 락을 잡을 수 있으므로 locks_excluded도 필요 없음.
+* lock
+ nsync 라는 구글 락 라이브러리가 있음.
+ tensorflow/core/platform/default/mutex.h 참고하면
+ tensorflow에서 mutex_lock-> w 모드,
+ tf_shared_lock -> r 모드 락으로 래퍼함.

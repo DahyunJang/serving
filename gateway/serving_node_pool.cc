@@ -1,7 +1,6 @@
 #include "gateway/serving_node_pool.h"
 
 
-//흠 거의 단일 스레드 워크인데 뮤텍스가 필요할까?
 namespace tensorflow {
 namesapce serving{
     ServingNodePool::ServingNodePool(std::unique_ptr<ServingNodeSelector> selector)

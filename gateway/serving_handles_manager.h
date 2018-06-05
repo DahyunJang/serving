@@ -15,38 +15,44 @@
 namespace tensorflow {
 namesapce serving{
 
-
+    /* TEST 신경써서 할 것! */
+/* ServingHandlesManager updates  */
 // serving_node_pool가지고 불러야 함..
 class ServingHandlesManager {
 public:
     /* this is applied to new_ one. needs manual update to swap old one and new */
-    void AddServingHandles(const SP_ServingNode& sp_serving_node){
-        mutex l(mu_new_);
-        /* 차이만 반영해야 하는데.. */
-        /* ㄱ드 */
-        new_serving_handles->AddServingHandles(sp_serving_node);
-    }
+    /* Must call Update function after AddServingHandles to read new information */
+    void AddServingHandles(const SP_ServingNode& sp_serving_node)
+        LOCKS_EXCLUDED(mu_new_);
 
     /* get from current */
-    SP_ServingNode& GetServingNode (const ModelId& model_id){
-        mutex_lock l(mu_current_);
-        current_serving_handles->GetServingNode(model_id);
-    }
+    /*
+       참고로 thread_annotation은 컴파일 체크용이고
+       mu_current_는 shared로 걸리는데,
+       내부에서 락을 잡으므로 priviously required는 아니고(shared_locks_required)
+       다른 데서도 미리 락을 잡을 수 있으므로 locks_excluded도 필요 없음.
+     */
+    SP_ServingNode& GetServingNode (const ModelId& model_id);
 
 
-    void Update(){
-        mutex l(mu_new_);
-        mutex_lock l(mu_current_);
-        current_serving_handles = std::move(new_serving_handles);
-    }
+    /* move new_serving_handles to currenst_serving_handles */
+    void Update()
+        LOCKS_EXCLUDED(mu_new_); // locks_excluded(mu_current_)?
 
 private:
-    //TODO change mu_currnet_ to rw lock ?
+
+    /* nsync 라는 구글 락 라이브러리가 있음.
+       tensorflow/core/platform/default/mutex.h 참고하면
+       tensorflow에서 mutex_lock-> w 모드,
+       tf_shared_lock -> r 모드 락으로 래퍼함.
+     */
     mutex mu_current_;
-    shared_ptr<ServingHandles> current_serving_handles;
+    shared_ptr<ServingHandles> current_serving_handles
+        GUARDED_BY(mu_current_);
 
     mutex mu_new_;
-    shared_ptr<ServingHandles> new_serving_handles;
+    shared_ptr<ServingHandles> new_serving_handles
+        GUARDED_BY(mu_new_);
 }
 
 

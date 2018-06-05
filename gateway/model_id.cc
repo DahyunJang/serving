@@ -1,8 +1,8 @@
 #include "model_id.h"
 
 /* ----------------------------------------------------------------- */
-ModelId::ModelId(string& name, ModelStatus status = ModelStatus::Servable):
-    name_(name), status_(status);
+ModelId::ModelId(string& name, ModelStatus status):
+    name_(name), status_(status){}
 
 
 bool ModelId::bool IsServable(){
@@ -10,7 +10,7 @@ bool ModelId::bool IsServable(){
 }
 
 
-void SetStatus(ModelStatus new_status = ModelStatus::Servable){
+void SetStatus(ModelStatus new_status){
     this.status = new_status;
 }
 

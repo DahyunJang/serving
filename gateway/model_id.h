@@ -18,7 +18,7 @@ enum class ModelStatus {Servable, NotServable};
 
 Class ModelId{
 public:
-    ModelId(string& name, ModelStatus status);
+    ModelId(string& name, ModelStatus status = ModelStatus::Servable);
 
     bool IsServable();
 
