@@ -6,6 +6,7 @@
 
 #include "gateway/model_id.h"
 #include "gateway/serving_node.h"
+#include "gateway/serving_nodes.h"
 #include "gateway/serving_node_selector.h"
 #include "gateway/serving_node_selector_factory.h"
 
@@ -13,24 +14,31 @@ namespace tensorflow {
 namesapce serving{
 
 class ServingHandle{
+    /* serving handel should be lock free */
+    /* lockign mechanism is up on ServingHandlesmanager*/
+    /* Rather than modify it, you should make new for lock-free. */
+    /* TODO WANRING 모니터 만들 때도 모디파이 없이 새로 만들 것  */
 public:
     ServingHandle(const ModelId& model_id,
                   UptrServingNodeSelector selector
-                  = ServingNodeSelectorFactory::Create(),
-                  SptrServingNodes sp_serving_nodes = nullptr)
-        :model_id_(model_id), selector_(selector),
-        sp_serving_nodes_(sp_serving_nodes){}
+                  = ServingNodeSelectorFactory::Create())
+        :model_id_(model_id), selector_(selector){}
 
     friend bool operator==(const ServingHandle &a, const ServingHandle& b);
     friend bool operator!=(const ServingHandle &a, const ServingHandle& b);
     friend bool operator<(const ServingHandle &a, const ServingHandle& b);
 
-    SptrServingNode Select(){
+    /* 모델 아이디에 대해 IsServing같은 체크가 없으니 사용시 유의할 것*/
+    void AddServingNode(SptrServingNode sp_serving_node){
+        sp_serving_nodes_.AddServingNode(sp_serving_node);
+    }
+
+    SptrServingNode GetServingNode(){
         return selector_.Select(sp_serving_nodes_);
     }
 
 private:
-    ModelId model_id_;
+    const ModelId model_id_;
     UptrServingNodeSelector selector_;
     SptrServingNodes sp_serving_nodes_;
 }
@@ -62,7 +70,7 @@ public:
     }
 
     void AddServingHandles(SptrServingNode sp_serving_node){
-        const ModelIds model_ids = sp_serving_node->GetModelIds();
+        const std::vector<ModelId> model_ids = sp_serving_node->Getstd::vector<ModelId>();
         for (ModelId& model_id : model_ids){
             AddServingHandles(model_id, sp_serving_node);
         }

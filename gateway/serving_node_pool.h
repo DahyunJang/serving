@@ -8,6 +8,7 @@
 
 
 #include "gateway/serving_node.h"
+#include "gateway/serving_nodes.h"
 #include "gateway/serving_node_selector.h"
 
 
@@ -27,18 +28,14 @@ public:
     /* create with default selector */
     ServingNodePool();
 
-    /* TODO
-       이름이 마음에 안든다 ㅠㅠ
-       ServingNode를 넣는게 아니라 SptrServingNode를 추가하는건데.
-       파리미터 폼도 비대칭적이고..
-     */
     void AddServingNode(SptrServingNode serving_node)
         LOCKS_EXCLUDED(mu_);
 
     void RemoveServingNode(const ServingNode& serving_node)
         LOCKS_EXCLUDED(mu_);
 
-    void RemoveServingNode(const SptrServingNode& sp_serving_node);
+    void RemoveServingNode(const SptrServingNode& sp_serving_node)
+        LOCKS_EXCLUDED(mu_);
 
     SptrServingNode GetServingNodeCandidate()
         LOCKS_EXCLUDED(mu_);

@@ -60,7 +60,7 @@ Status ServingNode::UpdateModelStatus(){
     }
 }
 
-const ModelIds& GetModelIds() const{
+const std::vector<ModelId>& Getstd::vector<ModelId>() const{
     return model_ids_;
 }
 

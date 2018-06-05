@@ -15,15 +15,9 @@
 namespace tensorflow {
 namesapce serving{
 
-enum class ModelStatus {Servable, NotServable};
-
 Class ModelId{
 public:
-    ModelId(string& name, ModelStatus status = ModelStatus::Servable);
-
-    bool IsServable();
-
-    void SetStatus(ModelStatus status = ModelStatus::Servable);
+    ModelId(string& name);
 
     /* for container.. */
     friend bool operator==(const ModelId &a, const ModelId& b);
@@ -34,7 +28,6 @@ public:
 
 private:
     const string name_;            /* model_name */
-    ModelStatus status_;
 };
 
 bool operator==(const ModelId &a, const ModelId& b){
@@ -48,9 +41,6 @@ bool operator!=(const ModelId &a, const ModelId& b){
 bool operator<(const ModelId &a, const ModelId& b){
     return (a.name_ < b.name_);
 }
-
-using ModelIds = std::vector<ModelId>;
-
 
 } //serving
 } // tensorflow

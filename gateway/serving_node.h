@@ -52,7 +52,7 @@ public:
     Status UpdateModelStatus();
 
     /* TODO return value? */
-    const ModelIds& GetModelIds() const;
+    const std::vector<ModelId>& Getstd::vector<ModelId>() const;
 
     Status FilePredict(const ModelId& model_id,
                        const string& input_data_file_path,
@@ -80,7 +80,7 @@ private:
 
     //This is kind a cache of model stauts in serving node.
     mutex mu_;
-    ModelIds model_ids_ GUARDED_BY(mu_);
+    std::vector<ModelId> model_ids_ GUARDED_BY(mu_);
 }
 
 
@@ -96,10 +96,6 @@ bool operator<(const ServingNode& a, const ServingNode& b){
     return (a.server_port_ < b.server_port_);
 }
 
-
-using SptrServingNode = std::shared_ptr<ServingNode>;
-using SptrServingNodes = std::vector<SptrServingNode>;
-using SptrServingNodesIter = std::vector<SptrServingNode>::iterator;
 
 } //serving
 } // tensorflow
