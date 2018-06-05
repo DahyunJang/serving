@@ -26,8 +26,7 @@ ServingNode::ServingNode(const string& server_port,
 void ServingNode::AddModelId(const ModelId& model_id)
 {
     mutex_lock l(mu_);
-    if (std::find(model_ids_.begin(), model_ids_.end(), model_id)
-        == model_ids_.end()){
+    if (!IsServingModel(model_id)){
         model_ids_.push_back(model_id);
     }
 }
@@ -61,7 +60,7 @@ Status ServingNode::UpdateModelStatus(){
     }
 }
 
-const std::vector<ModelId>& GetModelIds() const{
+const ModelIds& GetModelIds() const{
     return model_ids_;
 }
 
@@ -121,10 +120,16 @@ Status ServingNode::FilePredict_(const FilePredictRequest &request,
 
 
 
-bool ServingNode::IsServingModel_(ModelId& model_id)
+bool ServingNode::IsServingModel(ModelId& model_id)
 {
     mutex_lock l(mu_);
-    model_ids_.find(model_ids_.begin(), model_ids_.end(), model_id);
+
+    if (std::find(model_ids_.begin(), model_ids_.end(), model_id)
+        == model_ids_.end()){
+        return false;
+    }
+
+    return true;
 }
 
 

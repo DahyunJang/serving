@@ -25,6 +25,10 @@ public:
     friend bool operator!=(const ServingHandle &a, const ServingHandle& b);
     friend bool operator<(const ServingHandle &a, const ServingHandle& b);
 
+    SptrServingNode Select(){
+        return selector_.Select(sp_serving_nodes_);
+    }
+
 private:
     ModelId model_id_;
     UptrServingNodeSelector selector_;
@@ -51,17 +55,14 @@ bool operator<(const ServingHandle& a, const ServingHandle& b){
 class ServingHandles {
 public:
 
-    void AddServingHandles(const ModelId& model_id,
-                           SptrServingNode sp_serving_node){
+    void AddServingHandle(const ModelId& model_id,
+                          SptrServingNode sp_serving_node){
         //1. find ServingHandle by model_id
+        //2. add sp_serving_node to handle.
     }
 
-    /*
-       이거 파라미터 타입을 레퍼런스로 받아야 할까??
-       그리고 -> 쓰는게 이상한데 .. using은 그냥 매크로로 이해해도 되는거지?
-     */
     void AddServingHandles(SptrServingNode sp_serving_node){
-        cosnt std::vector<ModelId> model_ids = sp_serving_node->GetModelIds();
+        const ModelIds model_ids = sp_serving_node->GetModelIds();
         for (ModelId& model_id : model_ids){
             AddServingHandles(model_id, sp_serving_node);
         }
@@ -69,13 +70,16 @@ public:
 
 
     /* logic? */
-    SptrServingNode GetServingNode (const ModelId& model_id,
-                                    ServingNodeSelector& selector){
+    SptrServingNode GetServingNode (const ModelId& model_id){
 
-        return selector().select;
+        return serving_handle.Select(serving_handle);
     }
 
 private:
+    bool FindServingHandle(const ModelId& model_id, ){
+
+    }
+
     std::vector<ServingHandle> handles_map;
 }
 

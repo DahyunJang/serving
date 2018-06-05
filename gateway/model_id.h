@@ -3,6 +3,7 @@
 
 #include <string>
 
+
 #include "tnesorflow/core/lib/strings/strcat.h"
 #include "tensorflow/core/paltform/mutex.h"
 #include "tensorflow/core/paltform/thread_annotations.h"
@@ -48,6 +49,7 @@ bool operator<(const ModelId &a, const ModelId& b){
     return (a.name_ < b.name_);
 }
 
+using ModelIds = std::vector<ModelId>;
 
 
 } //serving

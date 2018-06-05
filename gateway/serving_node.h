@@ -52,7 +52,7 @@ public:
     Status UpdateModelStatus();
 
     /* TODO return value? */
-    const std::vector<ModelId>& GetModelIds() const;
+    const ModelIds& GetModelIds() const;
 
     Status FilePredict(const ModelId& model_id,
                        const string& input_data_file_path,
@@ -75,13 +75,12 @@ private:
                         FilePredictResponse *response);
 
 
-    bool IsServingModel_(ModelId& model_id)
+    bool IsServingModel(ModelId& model_id)
         LOCKS_EXCLUDED(mu_);
 
     //This is kind a cache of model stauts in serving node.
     mutex mu_;
-    std::vector<ModelId> model_ids_
-        GUARDED_BY(mu_);
+    ModelIds model_ids_ GUARDED_BY(mu_);
 }
 
 
