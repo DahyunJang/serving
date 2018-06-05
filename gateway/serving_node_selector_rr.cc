@@ -6,7 +6,7 @@ ServingNodeSelectorRR::ServingNodeSelectorRR()
 
 /* 내부적으로 락을 잡지 않으니 락은 이 밖에서 잘 잡자 */
 virtual SptrServingNode
-ServingNodeSelectorRR::select(const SptrServingNodeVector& sp_serving_nodes){
+ServingNodeSelectorRR::select(const SptrServingNodes& sp_serving_nodes){
 
     // if the vector is emtpy..
     if(sp_serving_nodes.empty()){

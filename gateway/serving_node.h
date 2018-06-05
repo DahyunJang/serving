@@ -35,7 +35,6 @@ public:
 
     friend bool operator==(const ServingNode &a, const ServingNode& b);
     friend bool operator!=(const ServingNode &a, const ServingNode& b);
-
     friend bool operator<(const ServingNode& a, const ServingNode& b);
 
     void AddModelId(const ModelId& model_id)
@@ -90,16 +89,20 @@ bool operator==(const ServingNode &a, const ServingNode& b){
     return (a.server_port_ == b.server_port_);
 }
 
+bool operator!=(const ServingNode &a, const ServingNode& b){
+    return !(operator==(a,b));
+}
+
 bool operator<(const ServingNode& a, const ServingNode& b){
     return (a.server_port_ < b.server_port_);
 }
 
 
 using SptrServingNode = std::shared_ptr<ServingNode>;
-using SptrServingNodeVector = std::vector<SptrServingNode>;
-using SptrServingNodeVectorItr = std::vector<SptrServingNode>::iterator;
+using SptrServingNodes = std::vector<SptrServingNode>;
+using SptrServingNodesIter = std::vector<SptrServingNode>::iterator;
 
 } //serving
 } // tensorflow
 
-#endif //SERVING_GATEWAY_SERVING_NODE_H_
+#endif //SERVING_GATEWAY_SERVING_NOD>E_H_

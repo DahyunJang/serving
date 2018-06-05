@@ -22,7 +22,7 @@ class ServingHandlesManager {
 public:
     /* this is applied to new_ one. needs manual update to swap old one and new */
     /* Must call Update function after AddServingHandles to read new information */
-    void AddServingHandles(const SptrServingNode& sp_serving_node)
+    void AddServingHandles(SptrServingNode sp_serving_node)
         LOCKS_EXCLUDED(mu_new_);
 
     /* get from current */

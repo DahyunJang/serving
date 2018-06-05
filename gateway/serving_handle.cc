@@ -16,7 +16,7 @@ class ServingHandles {
 public:
 
     void AddServingHandles(const ModelId& model_id,
-                           const SptrServingNode& sp_serving_node){
+                           SptrServingNode sp_serving_node){
         handles_map.insert(
             std::pair<ModelId, SptrServingNode>(model_id, sp_serving_node));
     }
@@ -25,7 +25,7 @@ public:
        이거 파라미터 타입을 레퍼런스로 받아야 할까??
        그리고 -> 쓰는게 이상한데 .. using은 그냥 매크로로 이해해도 되는거지?
      */
-    void AddServingHandles(const SptrServingNode& sp_serving_node){
+    void AddServingHandles(SptrServingNode sp_serving_node){
         cosnt std::vector<ModelId> model_ids = sp_serving_node->GetModelIds();
         for (ModelId& model_id : model_ids){
             AddServingHandles(model_id, sp_serving_node);

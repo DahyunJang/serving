@@ -22,12 +22,12 @@ namesapce serving{
 
 class ServingNodePool {
 public:
-    ServingNodePool(std::unique_ptr<ServingNodeSelector> selector);
+    ServingNodePool(UptrServingNodeSelector selector);
 
     /* create with default selector */
     ServingNodePool();
 
-    void AddServingNode(const SptrServingNode& serving_node)
+    void AddServingNode(SptrServingNode serving_node)
         LOCKS_EXCLUDED(mu_);
 
     void RemoveServingNode(const ServingNode& serving_node)
@@ -39,8 +39,9 @@ public:
         LOCKS_EXCLUDED(mu_);
 private:
     mutex mu_;
-    SptrServingNodeVector sp_serving_nodes_ GUARDED_BY(mu_);
-    std::unique_ptr<ServingNodeSelector> serving_node_selector_;
+    SptrServingNodes sp_serving_nodes_ GUARDED_BY(mu_);
+
+    UptrServingNodeSelector serving_node_selector_;
 }
 
 } //namespace tensorflow

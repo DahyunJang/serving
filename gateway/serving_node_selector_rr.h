@@ -8,7 +8,7 @@ public:
     ServingNodeSelectorRR();
 
     virtual SptrServingNode select(
-        const SptrServingNodeVector& sp_serving_nodes);
+        const SptrServingNodes& sp_serving_nodes);
 
 private:
     int RR_counter_;

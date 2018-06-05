@@ -64,7 +64,7 @@ private:
     ServingHandlesManager serving_handles_;
 
     void UpdateServingHandles(){
-        for (const SptrServingNode& sp_serving_node :serving_node_pool_.?) {
+        for (SptrServingNode sp_serving_node :serving_node_pool_.?) {
             serving_handles_.AddServingHandles(sp_serving_node);
         }
         serving_handles_.Update();

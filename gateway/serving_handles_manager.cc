@@ -6,7 +6,7 @@ namesapce serving{
 
 /* this is applied to new_ one. needs manual update to swap old one and new */
 void ServingHandlesManager::AddServingHandles
-    (const SptrServingNode& sp_serving_node)
+    (SptrServingNode sp_serving_node)
 {
     mutex l(mu_new_);
     new_serving_handles->AddServingHandles(sp_serving_node);

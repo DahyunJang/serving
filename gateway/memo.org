@@ -11,3 +11,9 @@
  tensorflow/core/platform/default/mutex.h 참고하면
  tensorflow에서 mutex_lock-> w 모드,
  tf_shared_lock -> r 모드 락으로 래퍼함.
+
+* Sptr parameter
+오너십 수정시에만 shared ptr 형태를 쓸 것
+그리고 reference 형태로 전달하면 내부 오너십이 제대로 동작안함!
+벡터에 추가 혹은 생성자에 넣어 놓기 등을 위해서는 shared_ptr의 레퍼런스로 넘기면 안됨!
+https://msdn.microsoft.com/ko-kr/library/hh279669.aspxc

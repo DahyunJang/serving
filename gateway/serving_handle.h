@@ -2,21 +2,46 @@
 #define SERVING_GATEWAY_SERVING_HANDLE_H_
 
 
-#include <map>
+#include <vector>
 
 #include "gateway/model_id.h"
 #include "gateway/serving_node.h"
 #include "gateway/serving_node_selector.h"
-#include "gateway/"
+#include "gateway/serving_node_selector_factory.h"
 
 namespace tensorflow {
 namesapce serving{
 
-struct ServingHandle{
+class ServingHandle{
 public:
-    ModelId model_id;
-    std::unique_ptr<ServingNodeSelector> selector;
-    SptrServingNodeVector sp_serving_nodes;
+    ServingHandle(const ModelId& model_id,
+                  UptrServingNodeSelector selector
+                  = ServingNodeSelectorFactory::Create(),
+                  SptrServingNodes sp_serving_nodes = nullptr)
+        :model_id_(model_id), selector_(selector),
+        sp_serving_nodes_(sp_serving_nodes){}
+
+    friend bool operator==(const ServingHandle &a, const ServingHandle& b);
+    friend bool operator!=(const ServingHandle &a, const ServingHandle& b);
+    friend bool operator<(const ServingHandle &a, const ServingHandle& b);
+
+private:
+    ModelId model_id_;
+    UptrServingNodeSelector selector_;
+    SptrServingNodes sp_serving_nodes_;
+}
+
+
+bool operator==(const ServingHandle& a, const ServingHandle& b){
+    return (a.model_id_ == b.model_id_);
+}
+
+bool operator!=(const ServingHandle& a, const ServingHandle& b){
+    return !(operator==(a,b));
+}
+
+bool operator<(const ServingHandle& a, const ServingHandle& b){
+    return (a.modle_id_ < b.model_id_);
 }
 
 
@@ -27,16 +52,15 @@ class ServingHandles {
 public:
 
     void AddServingHandles(const ModelId& model_id,
-                           const SptrServingNode& sp_serving_node){
-        handles_map.insert(
-            std::pair<ModelId, SptrServingNode>(model_id, sp_serving_node));
+                           SptrServingNode sp_serving_node){
+        //1. find ServingHandle by model_id
     }
 
     /*
        이거 파라미터 타입을 레퍼런스로 받아야 할까??
        그리고 -> 쓰는게 이상한데 .. using은 그냥 매크로로 이해해도 되는거지?
      */
-    void AddServingHandles(const SptrServingNode& sp_serving_node){
+    void AddServingHandles(SptrServingNode sp_serving_node){
         cosnt std::vector<ModelId> model_ids = sp_serving_node->GetModelIds();
         for (ModelId& model_id : model_ids){
             AddServingHandles(model_id, sp_serving_node);
@@ -52,7 +76,7 @@ public:
     }
 
 private:
-    std::multi_map<ModelId, SptrServingNode> handles_map;
+    std::vector<ServingHandle> handles_map;
 }
 
 

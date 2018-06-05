@@ -3,7 +3,7 @@
 static std::unique_ptr<ServingNodeSelector>
 ServingNodeSelectorFactory::Create(ServingNodeSelectorType type){
 
-    unique_ptr<ServingNodeSelector> selector = nullptr;
+    UptrServingNodeSelector selector = nullptr;
     switch(type) {
     case ServingNodeSelectorType::RR :
         selector = make_unique<ServingNodeSelectorRR>();

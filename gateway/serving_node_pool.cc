@@ -12,7 +12,7 @@ namesapce serving{
     }
 
 
-void ServingNodePool::AddServingNode(const SptrServingNode& sp_serving_node)
+void ServingNodePool::AddServingNode(SptrServingNode sp_serving_node)
 {
     mutex_lock l(mu_);
     if (find_if(sp_serving_nodes_.begin(), sp_serving_nodes_.end(),
@@ -31,7 +31,7 @@ void ServingNodePool::RemoveServingNode(const ServingNode& serving_node)
 
     sp_serving_nodes_.remove_if(sp_serving_nodes_.begin(),
                                 sp_serving_nodes_.end(),
-                                [] (const SptrSErvingNode& cand){
+                                [] (const SptrServingNode& cand){
                                     return *cand == serving_node;});
 }
 

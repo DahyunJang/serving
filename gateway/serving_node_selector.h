@@ -7,8 +7,9 @@
 class ServingNodeSelector{
 public:
     virtual ~ServingNodeSelector(){};
-    virtual SptrServingNode select(const SptrServingNodeVector& sp_serving_nodes);
+    virtual SptrServingNode select(const SptrServingNodes& sp_serving_nodes);
 }
 
+using  std::unique_ptr<ServingNodeSelector> = UptrServingNodeSelector;
 
 #endif //SERVING_GATEWAY_SERVING_NODE_SELECTOR_H_
