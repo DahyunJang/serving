@@ -3,6 +3,7 @@
 
 #include "gateway/serving_node.h"
 
+/* only one selecor per each sp_serving_nodes wrapper object */
 /* base function */
 class ServingNodeSelector{
 public:
@@ -10,6 +11,5 @@ public:
     virtual SptrServingNode select(const SptrServingNodes& sp_serving_nodes);
 }
 
-using  std::unique_ptr<ServingNodeSelector> = UptrServingNodeSelector;
 
 #endif //SERVING_GATEWAY_SERVING_NODE_SELECTOR_H_

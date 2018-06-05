@@ -52,7 +52,7 @@ public:
     Status UpdateModelStatus();
 
     /* TODO return value? */
-    const std::vector<ModelId>& Getstd::vector<ModelId>() const;
+    const std::vector<ModelId>& GetModelIds() const;
 
     Status FilePredict(const ModelId& model_id,
                        const string& input_data_file_path,

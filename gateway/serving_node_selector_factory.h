@@ -12,8 +12,8 @@ enum class ServingNodeSelectorType {
 
 
 class ServingNodeSelectorFactory {
-    static UptrServingNodeSelector Create(ServingNodeSelectorType type
-                                          = ServingNodeSelectorType::RR);
+    static ServingNodeSelector CreateByType(ServingNodeSelectorType type
+                                            = ServingNodeSelectorType::RR);
 }
 
 #endif //SERVING_GATEWAY_SERVING_NODE_SELECTOR_FACTRORY_H_

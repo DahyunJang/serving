@@ -60,7 +60,7 @@ Status ServingNode::UpdateModelStatus(){
     }
 }
 
-const std::vector<ModelId>& Getstd::vector<ModelId>() const{
+const std::vector<ModelId>& GetModelIds() const{
     return model_ids_;
 }
 
@@ -100,7 +100,7 @@ Status ServingNode::FilePredict(const ModelId& model_id,
 
 
 // TODO
-Status ServingNode::GetModelStatus_(request, response){
+const Status ServingNode::GetModelStatus_(request, response) const{
     ClientContet context;
     return stub_->(&context, request, response);
 }
