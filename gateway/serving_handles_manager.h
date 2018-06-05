@@ -22,7 +22,7 @@ class ServingHandlesManager {
 public:
     /* this is applied to new_ one. needs manual update to swap old one and new */
     /* Must call Update function after AddServingHandles to read new information */
-    void AddServingHandles(const SP_ServingNode& sp_serving_node)
+    void AddServingHandles(const SptrServingNode& sp_serving_node)
         LOCKS_EXCLUDED(mu_new_);
 
     /* get from current */
@@ -32,7 +32,7 @@ public:
        내부에서 락을 잡으므로 priviously required는 아니고(shared_locks_required)
        다른 데서도 미리 락을 잡을 수 있으므로 locks_excluded도 필요 없음.
      */
-    SP_ServingNode& GetServingNode (const ModelId& model_id);
+    SptrServingNode GetServingNode (const ModelId& model_id);
 
 
     /* move new_serving_handles to currenst_serving_handles */

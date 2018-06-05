@@ -95,9 +95,9 @@ bool operator<(const ServingNode& a, const ServingNode& b){
 }
 
 
-using SP_ServingNode = std::shared_ptr<ServingNode>;
-using SP_ServingNodeVector = std::vector<SP_ServingNode>;
-using SP_ServingNodeVectorItr = std::vector<SP_ServingNode>::iterator;
+using SptrServingNode = std::shared_ptr<ServingNode>;
+using SptrServingNodeVector = std::vector<SptrServingNode>;
+using SptrServingNodeVectorItr = std::vector<SptrServingNode>::iterator;
 
 } //serving
 } // tensorflow

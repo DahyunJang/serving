@@ -6,7 +6,7 @@ namesapce serving{
 
 /* this is applied to new_ one. needs manual update to swap old one and new */
 void ServingHandlesManager::AddServingHandles
-    (const SP_ServingNode& sp_serving_node)
+    (const SptrServingNode& sp_serving_node)
 {
     mutex l(mu_new_);
     new_serving_handles->AddServingHandles(sp_serving_node);
@@ -15,7 +15,7 @@ void ServingHandlesManager::AddServingHandles
 }
 
 /* get from current */
-SP_ServingNode& ServingHandlesManager::GetServingNode (const ModelId& model_id){
+SptrServingNode ServingHandlesManager::GetServingNode (const ModelId& model_id){
     tf_shared_lock l(mu_current_);
     current_serving_handles->GetServingNode(model_id);
 }

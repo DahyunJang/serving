@@ -12,11 +12,11 @@ namesapce serving{
     }
 
 
-void ServingNodePool::AddServingNode(const SP_ServingNode& sp_serving_node)
+void ServingNodePool::AddServingNode(const SptrServingNode& sp_serving_node)
 {
     mutex_lock l(mu_);
     if (find_if(sp_serving_nodes_.begin(), sp_serving_nodes_.end(),
-                [] (const SP_ServingNode& cand){
+                [] (const SptrServingNode& cand){
                     return *cand == *sp_serving_node;})
         == sp_serving_nodes_.end()){
         sp_serving_nodes_.push_back(sp_serving_node);
@@ -31,19 +31,19 @@ void ServingNodePool::RemoveServingNode(const ServingNode& serving_node)
 
     sp_serving_nodes_.remove_if(sp_serving_nodes_.begin(),
                                 sp_serving_nodes_.end(),
-                                [] (const SP_SErvingNode& cand){
+                                [] (const SptrSErvingNode& cand){
                                     return *cand == serving_node;});
 }
 
 
-void ServingNodePool::RemoveServingNode(const SP_ServingNode& sp_serving_node){
+void ServingNodePool::RemoveServingNode(const SptrServingNode& sp_serving_node){
     RemoveServingNode(*sp_serving_node);
 }
 
 
 // selecto 분리
 // TODO develope logic with latency or resource evaluation.
-SP_ServingNode ServingNodePool::GetServingNodeCandidate()
+SptrServingNode ServingNodePool::GetServingNodeCandidate()
 {
     //lock is required. iter can be chaned because of reallocation.
     mutex_lock l(mu_);

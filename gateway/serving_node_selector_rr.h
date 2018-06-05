@@ -7,8 +7,8 @@ class ServingNodeSelectorRR : public ServingNodeSelectorBase{
 public:
     ServingNodeSelectorRR();
 
-    virtual SP_ServingNode select(
-        const SP_ServingNodeVector& sp_serving_nodes);
+    virtual SptrServingNode select(
+        const SptrServingNodeVector& sp_serving_nodes);
 
 private:
     int RR_counter_;

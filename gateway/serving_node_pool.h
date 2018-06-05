@@ -27,19 +27,19 @@ public:
     /* create with default selector */
     ServingNodePool();
 
-    void AddServingNode(const SP_ServingNode& serving_node)
+    void AddServingNode(const SptrServingNode& serving_node)
         LOCKS_EXCLUDED(mu_);
 
     void RemoveServingNode(const ServingNode& serving_node)
         LOCKS_EXCLUDED(mu_);
 
-    void RemoveServingNode(const SP_ServingNode& sp_serving_node);
+    void RemoveServingNode(const SptrServingNode& sp_serving_node);
 
-    SP_ServingNode GetServingNodeCandidate()
+    SptrServingNode GetServingNodeCandidate()
         LOCKS_EXCLUDED(mu_);
 private:
     mutex mu_;
-    SP_ServingNodeVector sp_serving_nodes_ GUARDED_BY(mu_);
+    SptrServingNodeVector sp_serving_nodes_ GUARDED_BY(mu_);
     std::unique_ptr<ServingNodeSelector> serving_node_selector_;
 }
 
