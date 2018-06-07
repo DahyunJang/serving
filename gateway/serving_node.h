@@ -37,6 +37,9 @@ public:
     friend bool operator!=(const ServingNode &a, const ServingNode& b);
     friend bool operator<(const ServingNode& a, const ServingNode& b);
 
+    bool IsServingModel(ModelId& model_id)
+        LOCKS_EXCLUDED(mu_);
+
     void AddModelId(const ModelId& model_id)
         LOCKS_EXCLUDED(mu_);
 
@@ -75,8 +78,6 @@ private:
                         FilePredictResponse *response);
 
 
-    bool IsServingModel(ModelId& model_id)
-        LOCKS_EXCLUDED(mu_);
 
     //This is kind a cache of model stauts in serving node.
     mutex mu_;
