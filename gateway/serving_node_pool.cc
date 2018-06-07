@@ -3,8 +3,10 @@
 
 namespace tensorflow {
 namesapce serving{
-ServingNodePool::ServingNodePool(std::unique_ptr<ServingNodeSelector> selector)
-    :serving_node_selector_(std::move(selector)){}
+ServingNodePool::ServingNodePool(ServingNodeSelectorType selector_type){
+    selector_ = ServingNodeSelectorFactory::CreateByType(selector_type);
+}
+
 
 ServingNodePool::ServingNodePool(){
     ServingNodePool(serving_node_selector_factory
@@ -35,7 +37,7 @@ SptrServingNode ServingNodePool::GetServingNodeCandidate()
 {
     //lock is required. iter can be chaned because of reallocation.
     mutex_lock l(mu_);
-    return serving_node_selector_->select(sp_serving_nodes_);
+    return selector_.select(sp_serving_nodes_);
 }
 
 } //namespace tensorflow

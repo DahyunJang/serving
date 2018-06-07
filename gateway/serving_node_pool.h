@@ -23,7 +23,8 @@ namesapce serving{
 
 class ServingNodePool {
 public:
-    ServingNodePool(UptrServingNodeSelector selector);
+    ServingNodePool(ServingNodeSelectorType selector_type
+                    = ServingNodeSelectorType::RR);
 
     /* create with default selector */
     ServingNodePool();
@@ -42,8 +43,7 @@ public:
 private:
     mutex mu_;
     SptrServingNodes sp_serving_nodes_ GUARDED_BY(mu_);
-
-    UptrServingNodeSelector serving_node_selector_;
+    ServingNodeSelector selector_;
 }
 
 } //namespace tensorflow

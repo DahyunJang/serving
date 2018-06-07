@@ -4,10 +4,11 @@
 #include <string>
 
 
-#include "tnesorflow/core/lib/strings/strcat.h"
+#include "tensorflow/core/lib/strings/strcat.h"
 #include "tensorflow/core/paltform/mutex.h"
 #include "tensorflow/core/paltform/thread_annotations.h"
 
+#include "gateway/serving_node_selector.h"
 
 /* TODO  ModelId -> ServingModel로 이름 변경하기 */
 /* TODO  map의 key로 사용할 건데.. 추가 작업 필요하지? */
