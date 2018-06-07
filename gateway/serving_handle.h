@@ -19,9 +19,7 @@ class ServingHandle{
     /* Rather than modify it, you should make new for lock-free. */
     /* TODO WANRING 모니터 만들 때도 모디파이 없이 새로 만들 것  */
 public:
-    ServingHandle(const ModelId& model_id,
-                  ServingNodeSelectorType selector_type
-                  = ServingNodeSelectorType::RR);
+    ServingHandle(const ModelId& model_id);
 
     friend bool operator==(const ServingHandle &a, const ServingHandle& b);
     friend bool operator!=(const ServingHandle &a, const ServingHandle& b);

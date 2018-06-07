@@ -12,14 +12,12 @@ class ServingHandles {
 public:
 
     /* 기존에 model_id가 같은 ServingHandle이 없어야 함. */
-    void AddServingHandle(const ModelId& model_id,
-                          ServingNodeSelectorType selector_type
-                          = ServingNodeSelectorType::RR);
+    void AddServingHandle(const ModelId& model_id);
 
     void AddServingNodeToServingHandle(const ModelId& model_id,
                                        SptrServingNode sp_serving_node);
 
-    void AddServingHandleWithServingNode(SptrServingNode sp_serving_node);
+    void AddServingNodeToServingHandle(SptrServingNode sp_serving_node);
 
     SptrServingNode GetServingNode (const ModelId& model_id);
 

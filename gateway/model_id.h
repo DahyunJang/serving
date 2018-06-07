@@ -8,7 +8,7 @@
 #include "tensorflow/core/paltform/mutex.h"
 #include "tensorflow/core/paltform/thread_annotations.h"
 
-#include "gateway/serving_node_selector.h"
+#include "gateway/serving_node_selector_factory.h"
 
 /* TODO  ModelId -> ServingModel로 이름 변경하기 */
 /* TODO  map의 key로 사용할 건데.. 추가 작업 필요하지? */
@@ -18,7 +18,11 @@ namesapce serving{
 
 Class ModelId{
 public:
-    ModelId(string& name);
+    ModelId(const string& name,
+            const ServingNodeSelectorType& selector_type
+            = ServingNodeSelectorType::RR);
+
+    ServingNodeSelectorType GetSelectorType();
 
     /* for container.. */
     friend bool operator==(const ModelId &a, const ModelId& b);
@@ -29,6 +33,7 @@ public:
 
 private:
     const string name_;            /* model_name */
+    const ServingNodeSelectorType selector_type_;
 };
 
 bool operator==(const ModelId &a, const ModelId& b){
