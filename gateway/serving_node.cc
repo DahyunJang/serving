@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "serving_node.h"
 
 using grpc::Channel;
