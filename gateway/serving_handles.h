@@ -15,7 +15,6 @@ public:
     void AddServingNodeToServingHandle(const ModelId& model_id,
                                        SptrServingNode sp_serving_node);
 
-    /* TODO */
     void RemvoeServingNodeToServingHandle(const ModelId& model_id,
                                        SptrServingNode sp_serving_node);
 
@@ -28,13 +27,7 @@ public:
 
 private:
     std::vector<SptrServingHandle> sp_serving_handles;
-
     SptrServingHandle GetServingHandle(const ModelId& model_id);
-
-    /* 기존에 model_id가 같은 ServingHandle이 없어야 함. */
-    void AddServingHandle(const ModelId& model_id);
-    /* TODO */
-    void RemoveServingHandle(const ModelId& model_id);
 }
 
 #endif //SERVING_GATEWAY_SERVING_HANDLE_H_

@@ -1,21 +1,34 @@
 #include <algorithm>
 #include "gateway/serving_handles.h"
 
-/* 기존에 model_id가 같은 ServingHandle이 없어야 함. */
-void ServingHandles::AddServingHandle(const ModelId& model_id){
+void ServingHandles::AddServingNodeToServingHandle(const ModelId& model_id,
+                                                   SptrServingNode sp_serving_node){
+
     SptrServingHandle sp_serving_handle = GetServingHandle(model_id);
     if (sp_serving_handle == nullptr){
-        // 2. if not found add one ServingHandle
         sp_serving_handle = std::make_shared<ServingHandle>(model_id);
         sp_serving_handles.push_back(sp_serving_handle);
     }
-}
 
-void ServingHandles::AddServingNodeToServingHandle(const ModelId& model_id,
-                                                   SptrServingNode sp_serving_node){
-    AddServingHandle(model_id);
     sp_serving_handle->AddServingNode(sp_serving_node);
 }
+
+void ServingHandles::RemoveServingNodeToServingHandle(const ModelId& model_id,
+                                                      const SptrServingNode& sp_serving_node){
+    SptrServingHandle sp_serving_handle = GetServingHandle(model_id);
+    if (sp_serving_handle != nullptr){
+        //remove here
+        sp_serving_handle->RemoveServingNode(sp_serving_node);
+        if (sp_serving_handle->IsEmpty()){
+            // 맞나.?
+            std::remove(sp_serving_handles.begin(), sp_serving_handles.end(), sp_serving_handle);
+        }
+    }
+
+    sp_serving_handle->AddServingNode(sp_serving_node);
+}
+
+
 
 
 SptrServingNode ServingHandles::GetServingNode(const ModelId& model_id){

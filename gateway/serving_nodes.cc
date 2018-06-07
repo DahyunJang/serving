@@ -19,6 +19,6 @@ void SptrServingNodes::RemoveServingNode(const SptrServingNode& sp_serving_node)
     RemoveServingNode(*sp_serving_node);
 }
 
-std::vector<SptrServingNode> SptrServingNodes::GetServingNodes(){
-    return sp_serving_nodes_;
+void SptrServingNodes::IsEmpty(){
+    return sp_serving_nodes_.empty();
 }
