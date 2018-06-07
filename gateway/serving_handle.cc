@@ -15,3 +15,8 @@ void ServingHandle::AddServingNode(SptrServingNode sp_serving_node){
 SptrServingNode ServingHandle::GetServingNode(){
     return selector_.Select(sp_serving_nodes_);
 }
+
+
+std::vector<SptrServingNode> ServingHandle::GetServingNodes(){
+    return sp_serving_nodes_.GetServingNodes();
+}

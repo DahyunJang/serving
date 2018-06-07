@@ -61,10 +61,6 @@ Status ServingNode::UpdateModelStatus(){
     }
 }
 
-const std::vector<ModelId>& GetModelIds() const{
-    return model_ids_;
-}
-
 
 Status ServingNode::FilePredict(const ModelId& model_id,
                                 const string& input_data_file_path,

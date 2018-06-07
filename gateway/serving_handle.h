@@ -21,14 +21,17 @@ class ServingHandle{
 public:
     ServingHandle(const ModelId& model_id);
 
+    /* 모델 아이디에 대해 IsServing같은 체크가 없으니 사용시 유의할 것*/
+    void AddServingNode(SptrServingNode sp_serving_node);
+    /* TODO */
+    void RemoveServingNode(SptrServingNode sp_serving_node);
+
+    SptrServingNode GetServingNode();
+
     friend bool operator==(const ServingHandle &a, const ServingHandle& b);
     friend bool operator!=(const ServingHandle &a, const ServingHandle& b);
     friend bool operator<(const ServingHandle &a, const ServingHandle& b);
 
-    /* 모델 아이디에 대해 IsServing같은 체크가 없으니 사용시 유의할 것*/
-    void AddServingNode(SptrServingNode sp_serving_node);
-
-    SptrServingNode GetServingNode();
 
 private:
     const ModelId model_id_;

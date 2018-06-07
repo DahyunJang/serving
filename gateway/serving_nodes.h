@@ -14,7 +14,7 @@ class SptrServingNodes{
     void AddServingNode(SptrServingNode sp_serving_node);
     void RemoveServingNode(const ServingNode& serving_node);
     void RemoveServingNode(const SptrServingNode& sp_serving_node);
-
+    std::vector<SptrServingNode> GetServingNodes();
 private:
     std::vector<SptrServingNode> sp_serving_nodes_;
 }

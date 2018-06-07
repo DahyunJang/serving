@@ -25,3 +25,4 @@ https://msdn.microsoft.com/ko-kr/library/hh279669.aspx
 * monitoring, hanldes 업데이트하기
 로드/언로드시 뉴핸들스에 반영
 모니터링 -> 기존 핸들스 정보로 밸리드한 애들만 뉴핸들스로 카피.(shared라서 옮기기 가능?)
+invalid처리는 어떻게?

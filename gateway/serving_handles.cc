@@ -13,23 +13,8 @@ void ServingHandles::AddServingHandle(const ModelId& model_id){
 
 void ServingHandles::AddServingNodeToServingHandle(const ModelId& model_id,
                                                    SptrServingNode sp_serving_node){
-    SptrServingHandle sp_serving_handle = GetServingHandle(model_id);
-    if (sp_serving_handle == nullptr){
-        // /* 음.. ServingHandle 넣어도 되나? */
-        // sp_serving_handle = std::make_shared<ServingHandle>(model_id);
-        // sp_serving_handles.push_back(sp_serving_handle);
-        //TODO> ServingHandle이 없으면 넣지 않기로 한다. 에러 핸들링은 어떻게?
-        return ;
-    }
+    AddServingHandle(model_id);
     sp_serving_handle->AddServingNode(sp_serving_node);
-}
-
-void ServingHandles::AddServingNodeToServingHandle(SptrServingNode sp_serving_node){
-    const std::vector<ModelId> model_ids
-        = sp_serving_node->GetModelIds();
-    for (ModelId& model_id : model_ids){
-        AddServingHandle(model_id, sp_serving_node);
-    }
 }
 
 

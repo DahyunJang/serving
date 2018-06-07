@@ -54,9 +54,6 @@ public:
     /* UpdateModelStatus for all model_id */
     Status UpdateModelStatus();
 
-    /* TODO return value? */
-    const std::vector<ModelId>& GetModelIds() const;
-
     Status FilePredict(const ModelId& model_id,
                        const string& input_data_file_path,
                        const string& output_data_file_path);

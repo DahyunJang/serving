@@ -22,8 +22,17 @@ class ServingHandlesManager {
 public:
     /* this is applied to new_ one. needs manual update to swap old one and new */
     /* Must call Update function after AddServingHandles to read new information */
-    void AddServingHandles(SptrServingNode sp_serving_node)
+    void AddServingNodeToServingHandle
+        (const ModelId& model_id, SptrServingNode sp_serving_node)
         LOCKS_EXCLUDED(mu_new_);
+
+    /* TODO */
+    void RemoveServingNodeToServingHandle
+        (const ModelId& model_id, SptrServingNode sp_serving_node)
+        LOCKS_EXCLUDED(mu_new_);
+
+    /* TODO */
+    void CopyCurrentToNew();
 
     /* get from current */
     /*
@@ -35,9 +44,11 @@ public:
     SptrServingNode GetServingNode (const ModelId& model_id);
 
 
-    /* move new_serving_handles to currenst_serving_handles */
+    /* change new_serving_handles to currenst_serving_handles
+       change reading handles
+     */
     void Update()
-        LOCKS_EXCLUDED(mu_new_); // locks_excluded(mu_current_)?
+        LOCKS_EXCLUDED(mu_new_), LOCKS_EXCLUDED(mu_current_); // 문법?
 
 private:
 
@@ -53,6 +64,16 @@ private:
     mutex mu_new_;
     shared_ptr<ServingHandles> new_serving_handles
         GUARDED_BY(mu_new_);
+
+    mutex mu_invalid_;
+    shared_ptr<ServingHandles> invalid_serving_handles
+        GUARDED_BY(mu_invalid_);
+
+    void AddInvalidServingNodeToServingHandle
+        (const ModelId& model_id, SptrServingNode sp_serving_node)
+        LOCKS_EXCLUDED(mu_invalid_);
+
+
 }
 
 
