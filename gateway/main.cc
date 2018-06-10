@@ -1,11 +1,8 @@
-#include "tensorflow/core/lib/core/errors.h"
-#include "tensorflow/core/lib/core/status.h"
-
-#include "gateway/serving_manager.h"
-
+#include "gateway/request_manager.h"
 
 int main () {
-    //create listener for clients
-    //create ServingManager
+    RequestManager req_man;
 
+
+    return 0;
 }
