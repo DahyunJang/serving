@@ -1,4 +1,4 @@
-#include GATEWAY_SN_H_
+#ifndef GATEWAY_SN_H_
 #define GATEWAY_SN_H_
 
 //temporal. change it to log
@@ -7,17 +7,17 @@
 #include "grpc++/create_channel.h"
 #include "grpc++/security/credentials.h"
 
-#include "tnesorflow/core/lib/strings/strcat.h"
+#include "tensorflow/core/lib/strings/strcat.h"
 #include "tensorflow/core/lib/core/errors.h"
 #include "tensorflow/core/lib/core/status.h"
-#include "tensorflow/core/paltform/mutex.h"
-#include "tensorflow/core/paltform/thread_annotations.h"
+#include "tensorflow/core/platform/mutex.h"
+#include "tensorflow/core/platform/thread_annotations.h"
 
 
 #include "gateway/model.h"
 
 namespace tensorflow {
-namesapce serving{
+namespace serving{
 // SN means "ServingNode"
 class SN{
 public:

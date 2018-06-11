@@ -1,7 +1,7 @@
 #include "gateway/request_manager.h"
 
 namespace tensorflow {
-namesapce serving{
+namespace serving{
 
 Status RequestManager::AddSN(const string& ip_port){
     /* TODO create error handling */

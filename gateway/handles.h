@@ -1,10 +1,10 @@
-#include GATEWAY_HANDLES_H_
+#ifndef GATEWAY_HANDLES_H_
 #define GATEWAY_HANDLES_H_
 
 #include <map>
 
-#include "tensorflow/core/paltform/mutex.h"
-#include "tensorflow/core/paltform/thread_annotations.h"
+#include "tensorflow/core/platform/mutex.h"
+#include "tensorflow/core/platform/thread_annotations.h"
 
 #include "gateway/model.h"
 #include "gateway/sn.h"

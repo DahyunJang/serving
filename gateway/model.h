@@ -1,4 +1,4 @@
-#include GATEWAY_MODEL_H_
+#ifndef GATEWAY_MODEL_H_
 #define GATEWAY_MODEL_H_
 
 #include <string>
@@ -6,7 +6,7 @@
 
 
 namespace tensorflow {
-namesapce serving{
+namespace serving{
 
 class Model {
 public:

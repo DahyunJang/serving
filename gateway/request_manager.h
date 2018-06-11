@@ -1,19 +1,19 @@
-#include GATEWAY_REQUEST_MANAGER_H_
+#ifndef GATEWAY_REQUEST_MANAGER_H_
 #define GATEWAY_REQUEST_MANAGER_H_
 
 
-#include "tnesorflow/core/lib/strings/strcat.h"
+#include "tensorflow/core/lib/strings/strcat.h"
 #include "tensorflow/core/lib/core/errors.h"
 #include "tensorflow/core/lib/core/status.h"
-#include "tensorflow/core/paltform/mutex.h"
-#include "tensorflow/core/paltform/thread_annotations.h"
+#include "tensorflow/core/platform/mutex.h"
+#include "tensorflow/core/platform/thread_annotations.h"
 
 
 #include "gateway/sn_pool.h"
 #include "gateway/handles.h"
 
 namespace tensorflow {
-namesapce serving{
+namespace serving{
 
 
 /* 음 적당한 이름이 없넹 */

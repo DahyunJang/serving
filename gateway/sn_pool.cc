@@ -1,7 +1,7 @@
 #include "gateway/sn_pool.h"
 
 namespace tensorflow {
-namesapce serving{
+namespace serving{
 
 SNPool::SNPool(){
     get_sn_pos_ = 0;

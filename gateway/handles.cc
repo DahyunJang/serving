@@ -2,7 +2,7 @@
 
 
 namespace tensorflow {
-namesapce serving{
+namespace serving{
 
 void Handles::AddHandle(const Model& model, SptrSN sn)
 {

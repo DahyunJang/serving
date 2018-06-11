@@ -1,7 +1,7 @@
 #include "gateway/model.h"
 
 namespace tensorflow {
-namesapce serving{
+namespace serving{
 
 Model::Model (const string& name, const string& model_path)
     :name_(name), model_path_(model_path){}

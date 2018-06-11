@@ -1,7 +1,7 @@
 #include "gateway/sn.h"
 
 namespace tensorflow {
-namesapce serving{
+namespace serving{
 // SN means "ServingNode"
 
 SN::SN(const string& ip_port)

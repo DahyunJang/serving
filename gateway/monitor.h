@@ -1,9 +1,9 @@
-#include GATEWAY_H_
+#ifndef GATEWAY_H_
 #define GATEWAY_H_
 
 
 namespace tensorflow {
-    namesapce serving{
+namespace serving{
 
 
     } //serving
