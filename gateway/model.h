@@ -10,19 +10,10 @@ namesapce serving{
 
 class Model {
 public:
-    Model (const string& name, const string& model_path)
-        :name_(name), model_path_(model_path){}
-
-    string DebugString() const {
-        return strings::StrCat("{name: ", name_, ", model_path:", model_path_, "}");
-    }
-
-    const string& GetModelName(){
-        return name_;
-    }
-    const string& GetModelPath(){
-        return model_path_;
-    }
+    Model (const string& name, const string& model_path);
+    string DebugString() const;
+    const string& GetModelName();
+    const string& GetModelPath();
 
     friend bool operator==(const Model &a, const Model& b);
     friend bool operator!=(const Model &a, const Model& b);

@@ -22,73 +22,32 @@ namesapce serving{
 class SN{
 public:
     /* TODO 생성시 장애 발생 대응 */
-    SN(const string& ip_port)
-        :ip_port_(ip_port){
-        stub_(PredictionService::NewStub(
-                  grpc::CreateChannel(server_port,
-                                      grpc::InsecureChannelCredentials())));
-    }
-
-    string DebugString() const {
-        return strings::StrCat("{ip_port: ", ip_port_, "}");
-    }
-
-    const string& GetIpPort() const{
-        return ip_port_;
-    }
+    SN(const string& ip_port);
+    string DebugString() const;
+    const string& GetIpPort() const;
 
     /* load 가 실제 SN에서 로드된건 아니고 객체에 할당만 된 것. */
-    bool hasModel(const Mdoel& model){
-        tf_shared_lock l(mu_);
-        return (std::find(models.cbegin(), models.cend(), model)
-                != models.cend());
-    }
+    bool hasModel(const Mdoel& model);
 
     /* temporal */
     Status LoadModel(const Model& model)
-        LOCKS_EXCLUDED(mu_){
-        std::cout << "LoadModel " << model.DebugString() << std::endl;
-        {
-            mutex l(mu_);
-            if (std::find(models.cbegin(), models.cend(), model)
-                == models.cend())
-                models.push_back(model);
-        }
-        return Status::OK();
-    }
-
+        LOCKS_EXCLUDED(mu_);
     /* temporal */
     Status UnloadModel(const Model& model)
-        LOCKS_EXCLUDED(mu_){
-        std::cout << "UnLoadModel " << model.DebugString() << std::endl;
-        {
-            mutex l(mu_);
-            remove(models.begin(), models.end(), model);
-        }
-        return Status::OK();
-    }
+        LOCKS_EXCLUDED(mu_);
 
     /* sn 제거로 인한 모델 제거시/모니터에만 쓰여야 함. */
     /* 락 제어가 힘든 관계로 그냥 벡터를 다 복사한다.
      */
-    const std::vector<Model> GetModels() const{
-        tf_shared_lock l(mu_);
-        return models;
-    }
+    const std::vector<Model> GetModels() const;
 
     /* const method !! */
     /* not yet implemeted */
-    Status GetModelStatus(const Model& model) const{
-        std::cout << "GetModelStatus " << model.DebugString() << std::endl;
-    }
+    Status GetModelStatus(const Model& model) const;
 
     /* const method !! */
     /* not yet implemeted */
-    Status Predict(const Model& model) const{
-        std::cout << "Predict " << model.DebugString() << std::endl;
-    }
-
-
+    Status Predict(const Model& model) const;
 
 private:
     const string ip_port_;

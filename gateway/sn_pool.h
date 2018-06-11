@@ -15,69 +15,23 @@ namesapce serving{
 
 class SNPool{
 public:
-    SNPool(){
-        get_sn_pos_ = 0;
-    }
+    SNPool();
 
+    /* Create and add SptrSN to sp_sns_ */
     void CreateSN(const string& ip_port)
-        LOCKS_EXCLUDED(mu_){
-        mutex l(mu_);
+        LOCKS_EXCLUDED(mu_);
 
-        if (find_if(sp_sns_.begin(), sp_sns_.end(),
-                    [&ip_port] (const SptrSN& sp_cand){
-                        return sp_cand->GetIpPort() == ip_port;})
-            == sp_sns_.end()){
-            SptrSN sp_sn = std::make_shared<SN>(ip_port);
-            sp_sns_.push_back(sp_sn);
-        }
-
-        /* TODO 중간에 생성 안되는 경우가 있을 수 있음. */
-        return;
-    }
-
+    /* Remove SptrSN from sp_sns_ and destroy by its nauture of shared ptr*/
     void DestorySN(const string& ip_port)
-        LOCKS_EXCLUDED(mu_){
-        mutex l(mu_);
-
-        sp_sns_.remove_if(sp_sns_.begin(), sp_sns_.end(),
-                          [&ip_port] (const SptrSN& sp_cand){
-                              return sp_cand->GetIpPort() == ip_port;});
-
-    }
+        LOCKS_EXCLUDED(mu_);
 
     /* before destroy... */
-    const SptrSN GetSN(const string& ip_port) const{
-        auto iter = find_if(sp_sns_.begin(), sp_sns_.end(),
-                            [&ip_port] (const SptrSN& sp_cand){
-                                return sp_cand->GetIpPort() == ip_port;})
-        if (iter == sp_sns_.end()){
-            return nullptr;
-        }
-
-        return *iter;
-    }
-
+    const SptrSN GetSN(const string& ip_port) const;
 
     /* get SN candidate Except */
     /* 일단은 라운드로빈만 지원함. */
     SptrSN GetSNCandToLoadModel(const Model& model)
-        LOCKS_EXCLUDED(mu_){
-        mutex l(mu_);
-
-        std::size_t start_pos = get_sn_pos_;
-        do{
-            SptrSN cand = sp_sns_[get_sn_pos_];
-
-            if (++get_sn_pos_ == sp_sns_.size())
-                get_sn_pos_ = 0;
-
-            if (!cand.hasModel(model))
-                return cand;
-
-        } while(start_pos != get_sn_pos_);
-
-        return nullptr;
-    }
+        LOCKS_EXCLUDED(mu_);
 
 private:
     mutex mu_;
