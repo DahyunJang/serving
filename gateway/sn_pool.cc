@@ -9,7 +9,7 @@ SNPool::SNPool(){
 
 void SNPool::CreateSN(const string& ip_port)
 {
-    mutex l(mu_);
+    mutex_lock l(mu_);
 
     if (find_if(sp_sns_.begin(), sp_sns_.end(),
                 [&ip_port] (const SptrSN& sp_cand){
@@ -25,22 +25,23 @@ void SNPool::CreateSN(const string& ip_port)
 
 void SNPool::DestroySN(const string& ip_port)
 {
-    mutex l(mu_);
+    mutex_lock l(mu_);
 
-    sp_sns_.remove_if(sp_sns_.begin(), sp_sns_.end(),
-                      [&ip_port] (const SptrSN& sp_cand){
-                          return sp_cand->GetIpPort() == ip_port;});
+    std::remove_if(sp_sns_.begin(), sp_sns_.end(),
+                   [&ip_port] (const SptrSN& sp_cand){
+                       return sp_cand->GetIpPort() == ip_port;});
 
 }
 
 /* before destroy... */
 const SptrSN SNPool::GetSN(const string& ip_port) const{
-    auto iter = find_if(sp_sns_.begin(), sp_sns_.end(),
+    auto iter = std::find_if(sp_sns_.begin(), sp_sns_.end(),
                         [&ip_port] (const SptrSN& sp_cand){
-                            return sp_cand->GetIpPort() == ip_port;})
-        if (iter == sp_sns_.end()){
-            return nullptr;
-        }
+                                 return sp_cand->GetIpPort() == ip_port;}
+        );
+    if (iter == sp_sns_.end()){
+        return nullptr;
+    }
 
     return *iter;
 }
@@ -50,7 +51,7 @@ const SptrSN SNPool::GetSN(const string& ip_port) const{
 /* 일단은 라운드로빈만 지원함. */
 SptrSN SNPool::GetSNCandToLoadModel(const Model& model)
 {
-    mutex l(mu_);
+    mutex_lock l(mu_);
 
     std::size_t start_pos = get_sn_pos_;
     do{
@@ -59,7 +60,7 @@ SptrSN SNPool::GetSNCandToLoadModel(const Model& model)
         if (++get_sn_pos_ == sp_sns_.size())
             get_sn_pos_ = 0;
 
-        if (!cand.hasModel(model))
+        if (!cand->hasModel(model))
             return cand;
 
     } while(start_pos != get_sn_pos_);

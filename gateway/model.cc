@@ -3,17 +3,17 @@
 namespace tensorflow {
 namespace serving{
 
-Model::Model (const string& name, const string& model_path)
+Model::Model (const std::string& name, const std::string& model_path)
     :name_(name), model_path_(model_path){}
 
-string Model::DebugString() const {
-    return strings::StrCat("{name: ", name_, ", model_path:", model_path_, "}");
+std::string Model::DebugString() const {
+    return "{name: " + name_ + ", model_path:" + model_path_ + "}";
 }
 
-const string& Model::GetModelName() const{
+const std::string& Model::GetModelName() const{
     return name_;
 }
-const string& Model::GetModelPath() const{
+const std::string& Model::GetModelPath() const{
     return model_path_;
 }
 

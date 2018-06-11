@@ -6,12 +6,12 @@ namespace serving{
 
 void Handles::AddHandle(const Model& model, SptrSN sn)
 {
-    mutex l(mu_update_);
+    mutex_lock l(mu_update_);
     /*
       mutlimap은 k-v가 완전히 같아도 들어가므로 체크 필요
     */
     auto range = update_handles_.equal_range(model);
-    for(auto i = range.first, i != range.second, i++){
+    for(auto i = range.first; i != range.second; i++){
         if (i->second == sn){
             return;
         }
@@ -20,15 +20,15 @@ void Handles::AddHandle(const Model& model, SptrSN sn)
     update_handles_.insert(std::make_pair(model, sn));
 }
 
-void Handles::RemoveHandle(const Model& model, SptrSN sn = nullptr)
+void Handles::RemoveHandle(const Model& model, SptrSN sn)
 {
-    mutex l(mu_update_);
+    mutex_lock l(mu_update_);
     if (sn == nullptr){
         update_handles_.erase(model);
     }
     else {
         auto range = update_handles_.equal_range(model);
-        for(auto i = range.first, i != range.second, i++){
+        for(auto i = range.first; i != range.second; i++){
             if (i->second == sn){
                 update_handles_.erase(i);
                 break;
@@ -48,19 +48,19 @@ void Handles::Update()
     /* copy contents memory to update_copy
        컨테이너 엘리먼트들은 힙에 있음...
     */
-    mutex l(mu_update_);
+    mutex_lock l(mu_update_);
     HandleMap update_copy = update_handles_;
 
     /* update */
     {
-        mutex l(mu_read_);
+        mutex_lock l(mu_read_);
         /* move copied contents to read_handles_ */
         /* swap은 무브로 구현됨. */
         read_handles_.swap(update_copy);
     }
 }
 
-const SptrSN Handles::GetSN(const Model& model)
+const SptrSN Handles::GetSN(const Model& model) const
 {
     tf_shared_lock ls(mu_read_);
 

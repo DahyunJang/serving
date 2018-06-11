@@ -2,6 +2,7 @@
 #define GATEWAY_SN_POOL_H_
 
 #include <vector>
+#include <algorithm>
 
 #include "tensorflow/core/lib/core/errors.h"
 #include "tensorflow/core/lib/core/status.h"

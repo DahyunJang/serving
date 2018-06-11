@@ -1,7 +1,6 @@
 #ifndef GATEWAY_REQUEST_MANAGER_H_
 #define GATEWAY_REQUEST_MANAGER_H_
 
-
 #include "tensorflow/core/lib/strings/strcat.h"
 #include "tensorflow/core/lib/core/errors.h"
 #include "tensorflow/core/lib/core/status.h"

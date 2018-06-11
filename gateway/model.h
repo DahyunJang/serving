@@ -2,7 +2,6 @@
 #define GATEWAY_MODEL_H_
 
 #include <string>
-#include "tensorflow/core/lib/strings/strcat.h"
 
 
 namespace tensorflow {
@@ -10,18 +9,18 @@ namespace serving{
 
 class Model {
 public:
-    Model (const string& name, const string& model_path);
-    string DebugString() const;
-    const string& GetModelName() const;
-    const string& GetModelPath() const;
+    Model (const std::string& name, const std::string& model_path);
+    std::string DebugString() const;
+    const std::string& GetModelName() const;
+    const std::string& GetModelPath() const;
 
     friend bool operator==(const Model &a, const Model& b);
     friend bool operator!=(const Model &a, const Model& b);
     friend bool operator<(const Model &a, const Model& b);
 
 private:
-    const string name_;
-    const string model_path_;
+    const std::string name_;
+    const std::string model_path_;
 };
 
 

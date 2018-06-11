@@ -49,8 +49,8 @@ void RequestManager::MigrateHandle(const Model& model, SptrSN from){
 
 //TODO with context
 void RequestManager::Predict(Model& model) const{
-    cosnt SptrSN sn = handles_.GetSN(model);
-    sn->Predict();
+    const SptrSN sn = handles_.GetSN(model);
+    sn->Predict(model);
 }
 
 Status RequestManager::AddHandleOfSN(const string& ip_port){

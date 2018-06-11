@@ -1,8 +1,14 @@
 #include "gateway/request_manager.h"
 
-int main () {
-    RequestManager req_man;
+
+namespace tensorflow{
+namespace serving{
+    int main () {
+        RequestManager req_man;
 
 
-    return 0;
+        return 0;
+    }
+
+}
 }

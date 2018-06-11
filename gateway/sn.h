@@ -3,11 +3,9 @@
 
 //temporal. change it to log
 #include <iostream>
+#include <string>
 
-#include "grpc++/create_channel.h"
-#include "grpc++/security/credentials.h"
 
-#include "tensorflow/core/lib/strings/strcat.h"
 #include "tensorflow/core/lib/core/errors.h"
 #include "tensorflow/core/lib/core/status.h"
 #include "tensorflow/core/platform/mutex.h"
@@ -17,18 +15,25 @@
 
 #include "gateway/model.h"
 
+using tensorflow::serving::PredictRequest;
+using tensorflow::serving::PredictResponse;
+using tensorflow::serving::PredictionService;
+
+
+
+
 namespace tensorflow {
 namespace serving{
 // SN means "ServingNode"
 class SN{
 public:
     /* TODO 생성시 장애 발생 대응 */
-    SN(const string& ip_port);
-    string DebugString() const;
-    const string& GetIpPort() const;
+    SN(const std::string& ip_port);
+    std::string DebugString() const;
+    const std::string& GetIpPort() const;
 
     /* load 가 실제 SN에서 로드된건 아니고 객체에 할당만 된 것. */
-    bool hasModel(const Model& model) const;
+    bool hasModel(const Model& model);
 
     /* temporal */
     Status LoadModel(const Model& model)
@@ -40,7 +45,7 @@ public:
     /* sn 제거로 인한 모델 제거시/모니터에만 쓰여야 함. */
     /* 락 제어가 힘든 관계로 그냥 벡터를 다 복사한다.
      */
-    const std::vector<Model> GetModels() const;
+    const std::vector<Model> GetModels();
 
     /* const method !! */
     /* not yet implemeted */
@@ -51,7 +56,7 @@ public:
     Status Predict(const Model& model) const;
 
 private:
-    const string ip_port_;
+    const std::string ip_port_;
     std::unique_ptr<PredictionService::Stub> stub_;
 
     mutex mu_;
