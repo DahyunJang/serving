@@ -81,6 +81,3 @@ const SptrSN Handles::GetSN(const Model& model)
 
 } //serving
 } //tensorflow
-
-
-#endif

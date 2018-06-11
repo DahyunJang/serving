@@ -13,6 +13,7 @@
 #include "tensorflow/core/platform/mutex.h"
 #include "tensorflow/core/platform/thread_annotations.h"
 
+#include "tensorflow_serving/apis/prediction_service.grpc.pb.h"
 
 #include "gateway/model.h"
 
@@ -27,7 +28,7 @@ public:
     const string& GetIpPort() const;
 
     /* load 가 실제 SN에서 로드된건 아니고 객체에 할당만 된 것. */
-    bool hasModel(const Mdoel& model);
+    bool hasModel(const Model& model) const;
 
     /* temporal */
     Status LoadModel(const Model& model)
@@ -56,7 +57,7 @@ private:
     mutex mu_;
     std::vector<Model> models_
         GUARDED_BY(mu_);
-}
+};
 
 using SptrSN = std::shared_ptr<SN>;
 

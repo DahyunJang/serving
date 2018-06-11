@@ -23,7 +23,7 @@ void SNPool::CreateSN(const string& ip_port)
     return;
 }
 
-void SNPool::DestorySN(const string& ip_port)
+void SNPool::DestroySN(const string& ip_port)
 {
     mutex l(mu_);
 

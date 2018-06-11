@@ -11,7 +11,7 @@
 
 
 namespace tensorflow {
-namesapce serving{
+namespace serving{
 
 using HandleMap = std::unordered_multimap<Model, SptrSN, ModelHash>;
 
@@ -25,9 +25,9 @@ public:
         LOCKS_EXCLUDED(mu_update_);
 
     void Update()
-        LOCKS_EXCLUDED(mu_update_), LOCKS_EXCLUDED(mu_read_);
+        LOCKS_EXCLUDED(mu_update_) LOCKS_EXCLUDED(mu_read_);
 
-    const SptrSN GetSN(const Model& model);
+    const SptrSN GetSN(const Model& model) const;
 
 private:
 
@@ -40,7 +40,7 @@ private:
     mutex mu_update_;
     HandleMap update_handles_
         GUARDED_BY(mu_update_);
-}
+};
 
 } //serving
 } //tensorflow

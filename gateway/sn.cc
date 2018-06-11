@@ -7,7 +7,7 @@ namespace serving{
 SN::SN(const string& ip_port)
     :ip_port_(ip_port){
     stub_(PredictionService::NewStub(
-              grpc::CreateChannel(server_port,
+              grpc::CreateChannel(ip_port,
                                   grpc::InsecureChannelCredentials())));
 }
 
@@ -20,7 +20,7 @@ const string& SN::GetIpPort() const{
 }
 
 /* load 가 실제 SN에서 로드된건 아니고 객체에 할당만 된 것. */
-bool SN::hasModel(const Mdoel& model){
+bool SN::hasModel(const Model& model) const{
     tf_shared_lock l(mu_);
     return (std::find(models.cbegin(), models.cend(), model)
             != models.cend());

@@ -36,6 +36,7 @@ cc_library(
     deps = [
         ":model",
         "@grpc//:grpc++_unsecure",
+        "@protobuf_archive//:protobuf_lite",        
         "@org_tensorflow//tensorflow/core:lib",        
         "//tensorflow_serving/apis:model_management_proto",
         "//tensorflow_serving/apis:model_service_proto",
@@ -84,7 +85,6 @@ cc_binary(
     ],
     deps = [
         ":request_manager",
-        "@protobuf_archive//:cc_wkt_protos",
         "@org_tensorflow//tensorflow/core:lib",
                         "@grpc//:grpc++_unsecure",
     ]

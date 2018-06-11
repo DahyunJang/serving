@@ -22,7 +22,7 @@ public:
         LOCKS_EXCLUDED(mu_);
 
     /* Remove SptrSN from sp_sns_ and destroy by its nauture of shared ptr*/
-    void DestorySN(const string& ip_port)
+    void DestroySN(const string& ip_port)
         LOCKS_EXCLUDED(mu_);
 
     /* before destroy... */
@@ -39,7 +39,7 @@ private:
         GUARDED_BY(mu_);
 
     std::size_t get_sn_pos_;
-}
+};
 
 } //serving
 } //tensorflow

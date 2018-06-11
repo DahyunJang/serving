@@ -30,14 +30,14 @@ public:
 
     /* TODO 기존에 로드되지 않은 하나의 SN에 모델을 로드함. */
     Status LoadModel(const Model& model, SptrSN sn = nullptr);
-    Status UnloadModel(const Model& model, SptrSn sn = nullptr);
+    Status UnloadModel(const Model& model, SptrSN sn = nullptr);
 
     /* TODO not implemeted */
     /* unload model and load model on another SN */
     void MigrateHandle(const Model& model, SptrSN from);
 
     //TODO with context
-    void Predict(Model& model);
+    void Predict(Model& model) const;
 
 private:
     Status AddHandleOfSN(const string& ip_port);
@@ -45,7 +45,7 @@ private:
 
     SNPool sn_pool_;
     Handles handles_;
-}
+};
 
 
 } //serving
