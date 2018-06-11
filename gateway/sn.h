@@ -3,7 +3,6 @@
 
 //temporal. change it to log
 #include <iostream>
-#include <string>
 
 
 #include "tensorflow/core/lib/core/errors.h"
@@ -28,9 +27,9 @@ namespace serving{
 class SN{
 public:
     /* TODO 생성시 장애 발생 대응 */
-    SN(const std::string& ip_port);
-    std::string DebugString() const;
-    const std::string& GetIpPort() const;
+    SN(const string& ip_port);
+    string DebugString() const;
+    const string& GetIpPort() const;
 
     /* load 가 실제 SN에서 로드된건 아니고 객체에 할당만 된 것. */
     bool hasModel(const Model& model);
@@ -56,7 +55,7 @@ public:
     Status Predict(const Model& model) const;
 
 private:
-    const std::string ip_port_;
+    const string ip_port_;
     std::unique_ptr<PredictionService::Stub> stub_;
 
     mutex mu_;

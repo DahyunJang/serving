@@ -14,7 +14,7 @@ namespace tensorflow {
 namespace serving{
 // SN means "ServingNode"
 
-SN::SN(const std::string& ip_port)
+SN::SN(const string& ip_port)
     :ip_port_(ip_port){
     std::shared_ptr<Channel> channel =
         grpc::CreateChannel(ip_port, grpc::InsecureChannelCredentials());
@@ -22,11 +22,11 @@ SN::SN(const std::string& ip_port)
     stub_ = PredictionService::NewStub(channel);
 }
 
-std::string SN::DebugString() const {
+string SN::DebugString() const {
     return "{ip_port: " + ip_port_ + "}";
 }
 
-const std::string& SN::GetIpPort() const{
+const string& SN::GetIpPort() const{
     return ip_port_;
 }
 
