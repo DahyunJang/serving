@@ -31,7 +31,7 @@ limitations under the License.
 #include "tensorflow/core/platform/types.h"
 #include "tensorflow_serving/core/loader.h"
 #include "tensorflow_serving/core/loader_harness.h"
-#include "tensorflow_serving/core/manager.h"
+o#include "tensorflow_serving/core/manager.h"
 #include "tensorflow_serving/core/servable_data.h"
 #include "tensorflow_serving/core/servable_handle.h"
 #include "tensorflow_serving/core/servable_id.h"
