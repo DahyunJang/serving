@@ -1,14 +1,13 @@
 #include "gateway/request_manager.h"
 
+using tensorflow::gateway::RequestManager;
 
-namespace tensorflow{
-namespace gateway{
-    int main () {
-        RequestManager req_man;
-
-
-        return 0;
-    }
+namespace{
 
 }
+
+
+int main () {
+    RequestManager req_man;
+    return 0;
 }
