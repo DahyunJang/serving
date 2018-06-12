@@ -11,7 +11,7 @@ using grpc::Status;
 
 
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 // SN means "ServingNode"
 
 SN::SN(const string& ip_port)
@@ -23,7 +23,7 @@ SN::SN(const string& ip_port)
 }
 
 string SN::DebugString() const {
-    return "{ip_port: " + ip_port_ + "}";
+    return strings::StrCat("{ip_port: ", ip_port_, "}");
 }
 
 const string& SN::GetIpPort() const{

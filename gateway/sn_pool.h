@@ -12,7 +12,7 @@
 #include "gateway/sn.h"
 
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 
 class SNPool{
 public:
@@ -27,7 +27,8 @@ public:
         LOCKS_EXCLUDED(mu_);
 
     /* before destroy... */
-    const SptrSN GetSN(const string& ip_port) const;
+    const SptrSN GetSN(const string& ip_port)
+        LOCKS_EXCLUDED(mu_);
 
     /* get SN candidate Except */
     /* 일단은 라운드로빈만 지원함. */
@@ -42,7 +43,7 @@ private:
     std::size_t get_sn_pos_;
 };
 
-} //serving
+} //gateway
 } //tensorflow
 
 

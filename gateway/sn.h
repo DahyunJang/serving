@@ -4,6 +4,7 @@
 //temporal. change it to log
 #include <iostream>
 
+#include "tensorflow/core/lib/strings/strcat.h"
 
 #include "tensorflow/core/lib/core/errors.h"
 #include "tensorflow/core/lib/core/status.h"
@@ -22,7 +23,7 @@ using tensorflow::serving::PredictionService;
 
 
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 // SN means "ServingNode"
 class SN{
 public:
@@ -55,7 +56,7 @@ public:
     Status Predict(const Model& model) const;
 
 private:
-    const string ip_port_;
+    string ip_port_;
     std::unique_ptr<PredictionService::Stub> stub_;
 
     mutex mu_;

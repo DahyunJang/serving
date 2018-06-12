@@ -3,7 +3,7 @@
 
 
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 
 
     } //serving

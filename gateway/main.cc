@@ -2,7 +2,7 @@
 
 
 namespace tensorflow{
-namespace serving{
+namespace gateway{
     int main () {
         RequestManager req_man;
 

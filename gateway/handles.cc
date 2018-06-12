@@ -2,7 +2,7 @@
 
 
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 
 void Handles::AddHandle(const Model& model, SptrSN sn)
 {
@@ -60,7 +60,7 @@ void Handles::Update()
     }
 }
 
-const SptrSN Handles::GetSN(const Model& model) const
+const SptrSN Handles::GetSN(const Model& model)
 {
     tf_shared_lock ls(mu_read_);
 
@@ -72,12 +72,12 @@ const SptrSN Handles::GetSN(const Model& model) const
        암튼 나중에 수정...
        this is temporal code.
     */
-    for(auto i = range.first, i != range.second, i++){
+    for(auto i = range.first; i != range.second; i++){
         return i->second;
     }
 
     return nullptr;
 }
 
-} //serving
+} //gateway
 } //tensorflow

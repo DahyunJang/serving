@@ -1,7 +1,7 @@
 #include "gateway/request_manager.h"
 
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 
 Status RequestManager::AddSN(const string& ip_port){
     /* TODO create error handling */
@@ -48,7 +48,7 @@ void RequestManager::MigrateHandle(const Model& model, SptrSN from){
 }
 
 //TODO with context
-void RequestManager::Predict(Model& model) const{
+void RequestManager::Predict(Model& model){
     const SptrSN sn = handles_.GetSN(model);
     sn->Predict(model);
 }

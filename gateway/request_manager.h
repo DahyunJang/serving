@@ -12,7 +12,7 @@
 #include "gateway/handles.h"
 
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 
 
 /* 음 적당한 이름이 없넹 */
@@ -36,7 +36,7 @@ public:
     void MigrateHandle(const Model& model, SptrSN from);
 
     //TODO with context
-    void Predict(Model& model) const;
+    void Predict(Model& model);
 
 private:
     Status AddHandleOfSN(const string& ip_port);
@@ -47,7 +47,7 @@ private:
 };
 
 
-} //serving
+} //gateway
 } //tensorflow
 
 

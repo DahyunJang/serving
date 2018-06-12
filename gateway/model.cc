@@ -1,13 +1,15 @@
 #include "gateway/model.h"
 
+
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 
 Model::Model (const string& name, const string& model_path)
     :name_(name), model_path_(model_path){}
 
 string Model::DebugString() const {
-    return "{name: " + name_ + ", model_path:" + model_path_ + "}";
+    return strings::StrCat(
+        "{name: ", name_, ", model_path:", model_path_, "}");
 }
 
 const string& Model::GetModelName() const{

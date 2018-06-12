@@ -1,11 +1,12 @@
 #ifndef GATEWAY_MODEL_H_
 #define GATEWAY_MODEL_H_
 
+#include "tensorflow/core/lib/strings/strcat.h"
 
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 
-class Model {
+class Model{
 public:
     Model (const string& name, const string& model_path);
     string DebugString() const;
@@ -17,20 +18,23 @@ public:
     friend bool operator<(const Model &a, const Model& b);
 
 private:
-    const string name_;
-    const string model_path_;
+    /* string 에 const 붙이면 = 오퍼레이터가 안되고 컴파일도 안됨 */
+    string name_;
+    string model_path_;
 };
 
-
-bool operator==(const Model &a, const Model& b){
-    return a.name_ == b.name_;
+/* inline없으면 multiple definition 됨.
+   굳이 오퍼레이터를 글로벌로 쓸 필요는 없는데..
+ */
+inline bool operator==(const Model &a, const Model& b){
+    return a.name_.compare(b.name_) == 0;
 }
 
-bool operator!=(const Model& a, const Model& b){
+inline bool operator!=(const Model& a, const Model& b){
     return !(operator==(a,b));
 }
 
-bool operator<(const Model& a, const Model& b){
+inline bool operator<(const Model& a, const Model& b){
     return a.name_.compare(b.name_) < 0;
 }
 

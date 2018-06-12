@@ -20,12 +20,12 @@ limitations under the License.
 #include "tensorflow/core/lib/core/status.h"
 
 namespace tensorflow {
-namespace serving {
+namespace gateway {
 
 // Converts from tensorflow Status to GRPC Status.
 ::grpc::Status ToGRPCStatus(const ::tensorflow::Status& status);
 
-}  // namespace serving
+}  // namespace gateway
 }  // namespace tensorflow
 
 #endif  // TENSORFLOW_SERVING_MODEL_SERVERS_GRPC_STATUS_UTIL_H_

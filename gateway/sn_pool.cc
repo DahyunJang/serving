@@ -1,7 +1,7 @@
 #include "gateway/sn_pool.h"
 
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 
 SNPool::SNPool(){
     get_sn_pos_ = 0;
@@ -33,8 +33,10 @@ void SNPool::DestroySN(const string& ip_port)
 
 }
 
-/* before destroy... */
-const SptrSN SNPool::GetSN(const string& ip_port) const{
+
+const SptrSN SNPool::GetSN(const string& ip_port) {
+    mutex_lock l(mu_);
+
     auto iter = std::find_if(sp_sns_.begin(), sp_sns_.end(),
                         [&ip_port] (const SptrSN& sp_cand){
                                  return sp_cand->GetIpPort() == ip_port;}

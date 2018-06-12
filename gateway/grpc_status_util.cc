@@ -18,7 +18,7 @@ limitations under the License.
 #include "grpc++/support/status_code_enum.h"
 
 namespace tensorflow {
-namespace serving {
+namespace gateway {
 
 ::grpc::Status ToGRPCStatus(const ::tensorflow::Status& status) {
   const int kErrorMessageLimit = 1024;
@@ -33,5 +33,5 @@ namespace serving {
                         error_message);
 }
 
-}  // namespace serving
+}  // namespace gateway
 }  // namespace tensorflow

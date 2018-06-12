@@ -11,7 +11,7 @@
 
 
 namespace tensorflow {
-namespace serving{
+namespace gateway{
 
 using HandleMap = std::unordered_multimap<Model, SptrSN, ModelHash>;
 
@@ -27,7 +27,8 @@ public:
     void Update()
         LOCKS_EXCLUDED(mu_update_) LOCKS_EXCLUDED(mu_read_);
 
-    const SptrSN GetSN(const Model& model) const;
+    /* lock 잡는 것 때문에 const로 못씀.. */
+    const SptrSN GetSN(const Model& model);
 
 private:
 
