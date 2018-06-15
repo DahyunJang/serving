@@ -33,7 +33,7 @@ public:
     bool UnloadModel(const Model& model, const string& ip_port);
 
     //TODO with context
-    void Predict(Model& model);
+    bool Predict(const string& model_name);
 
 private:
     bool AddHandleOfSN(const string& ip_port);

@@ -40,6 +40,7 @@ inline bool operator<(const Model& a, const Model& b){
     return a.name_.compare(b.name_) < 0;
 }
 
+/* 핸들맵에 모델 이름만 키로 쓰기로해서 필요 없어짐 */
 struct ModelHash {
     std::size_t operator () (const Model& model) const {
         return std::hash<string>{}(model.GetModelName());

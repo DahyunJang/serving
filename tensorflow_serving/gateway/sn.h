@@ -30,12 +30,6 @@ public:
     /* TODO 생성시 장애 발생 대응 */
     SN(const string& ip_port);
 
-    /* 스텁 없는 객체임.
-       ip_port로 키 비교를 하려고 만들어 놨음 ㅠㅠ
-       이게 없으면 키 compare용 객체 만들 때 마다 stub이 생겨서.
-     */
-    SN(const string& ip_port, bool is_dummy);
-
     ~SN();
 
     string DebugString() const;
@@ -63,7 +57,7 @@ public:
 
     /* const method !! */
     /* not yet implemeted */
-    Status Predict(const Model& model) const;
+    Status Predict(const string& model_name) const;
 
     friend bool operator==(const SN& a, const SN& b);
     friend bool operator<(const SN& a, const SN& b);

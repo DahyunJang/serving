@@ -117,3 +117,16 @@ cc_test(
         "//tensorflow_serving/core/test_util:test_main",
     ],
 )
+
+cc_test(
+    name = "request_manager_test",
+    srcs = [
+        "request_manager_test.cc",
+    ],
+    deps = [
+        ":request_manager",
+        "@org_tensorflow//tensorflow/core:lib",
+        "@org_tensorflow//tensorflow/core:test",
+        "//tensorflow_serving/core/test_util:test_main",
+    ],
+)

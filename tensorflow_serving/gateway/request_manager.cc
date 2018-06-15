@@ -24,14 +24,14 @@ void RequestManager::UpdateHandles(){
 bool RequestManager::LoadModel(const Model& model, const string& ip_port){
     bool ret = false;
 
-    const SptrSN sn = handles_.GetSN(model);
+    const SptrSN sn = sn_pool_.GetSN(ip_port);
 
     if (sn != nullptr){
         Status status = sn->LoadModel(model);
         // TODO
         // handle status
         //if status is okay, add handle
-        ret = handles_.AddHandle(model, sn);
+        ret = handles_.AddHandle(model.GetModelName(), sn);
     }
     return ret;
 }
@@ -39,22 +39,30 @@ bool RequestManager::LoadModel(const Model& model, const string& ip_port){
 bool RequestManager::UnloadModel(const Model& model, const string& ip_port){
     bool ret = false;
 
-    const SptrSN sn = handles_.GetSN(model);
+    const SptrSN sn = sn_pool_.GetSN(ip_port);
 
     if (sn != nullptr){
         Status status = sn->UnloadModel(model);
         // TODO handles status
         // if status okay then remove handle
-        ret =  handles_.RemoveHandle(model, sn);
+        ret =  handles_.RemoveHandle(model.GetModelName(), sn);
     }
     return ret;
 }
 
 
 //TODO with context
-void RequestManager::Predict(Model& model){
-    const SptrSN sn = handles_.GetSN(model);
-    sn->Predict(model);
+bool RequestManager::Predict(const string& model_name){
+    bool ret = false;
+
+    const SptrSN sn = handles_.GetSN(model_name);
+
+    if (sn != nullptr){
+        sn->Predict(model_name);
+        ret = true;
+    }
+
+    return ret;
 }
 
 bool RequestManager::AddHandleOfSN(const string& ip_port){
@@ -62,9 +70,9 @@ bool RequestManager::AddHandleOfSN(const string& ip_port){
     const SptrSN sn = sn_pool_.GetSN(ip_port);
 
     if (sn != nullptr){
-        const std::vector<Model> models = sn->GetModels();
+        const std::list<Model> models = sn->GetModels();
         for (const Model& model: models){
-            handles_.AddHandle(model, sn);
+            handles_.AddHandle(model.GetModelName(), sn);
         }
         ret = true;
     }
@@ -75,9 +83,9 @@ bool RequestManager::RemoveHandleOfSN(const string& ip_port){
     bool ret = false;
     const SptrSN sn = sn_pool_.GetSN(ip_port);
     if (sn != nullptr){
-        const std::vector<Model> models = sn->GetModels();
+        const std::list<Model> models = sn->GetModels();
         for (const Model& model: models){
-            handles_.RemoveHandle(model, sn);
+            handles_.RemoveHandle(model.GetModelName(), sn);
         }
         ret = true;
     }

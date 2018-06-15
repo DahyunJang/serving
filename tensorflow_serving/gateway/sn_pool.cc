@@ -20,7 +20,6 @@ SptrSN SNPool::CreateSN(const string& ip_port)
 {
     mutex_lock l(mu_);
 
-    LOG(INFO) << "CreateSN :" << ip_port;
     SptrSN sp_sn = nullptr;
 
     if (find_if(sp_sns_.begin(), sp_sns_.end(),
@@ -47,8 +46,6 @@ const SptrSN SNPool::GetSN(const string& ip_port) {
     mutex_lock l(mu_);
     auto iter = std::find_if(sp_sns_.begin(), sp_sns_.end(),
                         [&ip_port] (const SptrSN& sp_cand){
-                                 LOG(INFO) << sp_cand->DebugString();
-                                 LOG(INFO) << (sp_cand->GetIpPort() == ip_port);
                                  return sp_cand->GetIpPort() == ip_port;}
         );
     if (iter == sp_sns_.end()){

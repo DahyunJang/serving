@@ -16,9 +16,6 @@ namespace serving{
 
 SN::SN(const string& ip_port)
     :ip_port_(ip_port){
-
-    LOG(INFO) << "Construct SN :" << ip_port;
-
     // TODO error 핸들링 필요
     std::shared_ptr<Channel> channel =
         grpc::CreateChannel(ip_port, grpc::InsecureChannelCredentials());
@@ -26,19 +23,8 @@ SN::SN(const string& ip_port)
     stub_ = PredictionService::NewStub(channel);
 }
 
-SN::SN(const string& ip_port, bool is_dummy)
-    :ip_port_(ip_port){
-    LOG(INFO) << "Construct Dummy SN :" << ip_port;
-    if (!is_dummy){
-        std::shared_ptr<Channel> channel =
-            grpc::CreateChannel(ip_port, grpc::InsecureChannelCredentials());
-
-        stub_ = PredictionService::NewStub(channel);
-    }
-}
 
 SN::~SN(){
-    LOG(INFO) << "Destruct SN :" << this->ip_port_;
 }
 
 
@@ -98,8 +84,8 @@ Status SN::GetModelStatus(const Model& model) const{
 
 /* const method !! */
 /* not yet implemeted */
-Status SN::Predict(const Model& model) const{
-    LOG(INFO) << "Predict " << model.DebugString();
+Status SN::Predict(const string& model_name) const{
+    LOG(INFO) << "Predict " << model_name << " on " << ip_port_;
     return Status::OK();
 }
 

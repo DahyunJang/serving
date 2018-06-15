@@ -8,14 +8,14 @@ string Handles::DebugString() const
 {
     string ret = "{{update_handles: ";
     for (auto handle :update_handles_){
-        ret = strings::StrCat(ret, handle.first.DebugString(),
+        ret = strings::StrCat(ret, handle.first,
                               handle.second->DebugString(), ", ");
     }
 
     ret = strings::StrCat(ret, "}, {read_handles: ");
 
     for (auto handle :read_handles_){
-        ret = strings::StrCat(ret, handle.first.DebugString(),
+        ret = strings::StrCat(ret, handle.first,
                               handle.second->DebugString(), ", ");
     }
 
@@ -23,10 +23,9 @@ string Handles::DebugString() const
     return ret;
 }
 
-bool Handles::AddHandle(const Model& model, SptrSN sn)
+bool Handles::AddHandle(const string& model_name, SptrSN sn)
 {
     mutex_lock l(mu_update_);
-    //LOG(INFO) << "AddHandle " << model.DebugString() << sn->DebugString();
     /*
       mutlimap은 k-v가 완전히 같아도 들어가므로 체크 필요
     */
@@ -34,31 +33,29 @@ bool Handles::AddHandle(const Model& model, SptrSN sn)
         return false;
     }
 
-    auto range = update_handles_.equal_range(model);
+    auto range = update_handles_.equal_range(model_name);
     for(auto i = range.first; i != range.second; i++){
         if (i->second->GetIpPort() == sn->GetIpPort()){
             return false;
         }
     }
 
-    update_handles_.insert(std::make_pair(model, sn));
+    update_handles_.insert(std::make_pair(model_name, sn));
     return true;
 }
 
 
 
-bool Handles::RemoveHandle(const Model& model, SptrSN sn)
+bool Handles::RemoveHandle(const string& model_name, SptrSN sn)
 {
     mutex_lock l(mu_update_);
 
     if (sn == nullptr){
-        //LOG(INFO) << "RemoveHandle " << model.DebugString();
-        update_handles_.erase(model);
+        update_handles_.erase(model_name);
         return true;//
     }
     else {
-        //LOG(INFO) << "RemoveHandle " << model.DebugString() << sn->DebugString();
-        auto range = update_handles_.equal_range(model);
+        auto range = update_handles_.equal_range(model_name);
         for(auto i = range.first; i != range.second; i++){
             if (i->second->GetIpPort() == sn->GetIpPort()){
                 update_handles_.erase(i);
@@ -93,14 +90,11 @@ void Handles::UpdateHandle()
     }
 }
 
-const SptrSN Handles::GetSN(const Model& model)
+const SptrSN Handles::GetSN(const string& model_name)
 {
     tf_shared_lock ls(mu_read_);
 
-    //LOG(INFO) << "GetSN " << model.DebugString();
-
-    auto range = read_handles_.equal_range(model);
-
+    auto range = read_handles_.equal_range(model_name);
     /* TODO 일단 모델은 하나만 로딩되는 것으로 가정하긴 함.
        select random? rr? 정책 없음
        state기반 변경이면 카운터가 있어야 하는데 모델에 넣어놔도 되나?

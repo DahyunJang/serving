@@ -19,8 +19,9 @@ namespace serving{
         auto sn1_2 = std::make_shared<SN>(ip_port1);
         auto sn2 = std::make_shared<SN>(ip_port2);
 
-        Model model1("model1", "test_path");
-        Model model2("model2", "test_path");
+        const string model1 = "model1";
+        const string model2 = "model2";
+
 
         // add
         EXPECT_EQ(handles.AddHandle(model1, sn1), true);
@@ -43,8 +44,8 @@ namespace serving{
         auto sn1_2 = std::make_shared<SN>(ip_port1);
         auto sn2 = std::make_shared<SN>(ip_port2);
 
-        Model model1("model1", "test_path");
-        Model model2("model2", "test_path");
+        const string model1 = "model1";
+        const string model2 = "model2";
 
         // remove
         EXPECT_EQ(handles.RemoveHandle(model1, sn1), false);
@@ -66,8 +67,8 @@ namespace serving{
         auto sn1_2 = std::make_shared<SN>(ip_port1);
         auto sn2 = std::make_shared<SN>(ip_port2);
 
-        Model model1("model1", "test_path");
-        Model model2("model2", "test_path");
+        const string model1 = "model1";
+        const string model2 = "model2";
 
         // remove
         EXPECT_EQ(handles.RemoveHandle(model1), true);
@@ -80,7 +81,6 @@ namespace serving{
         EXPECT_EQ(handles.RemoveHandle(model1), true);
         EXPECT_EQ(handles.RemoveHandle(model1,nullptr), true);
         EXPECT_EQ(handles.AddHandle(model1, sn2), true);
-
     }
 
 
@@ -94,9 +94,8 @@ namespace serving{
         auto sn1 = std::make_shared<SN>(ip_port1);
         auto sn1_2 = std::make_shared<SN>(ip_port1);
         auto sn2 = std::make_shared<SN>(ip_port2);
-
-        Model model1("model1", "test_path");
-        Model model2("model2", "test_path");
+        const string model1 = "model1";
+        const string model2 = "model2";
 
         // add
         EXPECT_EQ(handles.AddHandle(model1, sn1), true);
@@ -105,15 +104,10 @@ namespace serving{
 
         EXPECT_EQ(handles.GetSN(model1), nullptr);
         EXPECT_EQ(handles.GetSN(model2), nullptr);
-        LOG(INFO) << handles.DebugString();
         handles.UpdateHandle();
-        LOG(INFO) << handles.DebugString();
 
         EXPECT_EQ(handles.GetSN(model1), sn2); // last inserted
         EXPECT_EQ(handles.GetSN(model2), sn1);
-        EXPECT_EQ(handles.GetSN(model2)->DebugString(), sn1->DebugString());
-
-
     }
 
 }
