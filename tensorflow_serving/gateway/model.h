@@ -10,6 +10,7 @@ namespace serving{
 class Model{
 public:
     Model (const string& name, const string& model_path);
+
     string DebugString() const;
     const string& GetModelName() const;
     const string& GetModelPath() const;
@@ -20,10 +21,11 @@ public:
 private:
     /* string 에 const 붙이면 = 오퍼레이터가 안되고 컴파일도 안됨 */
     string name_;
-    string model_path_;
 
+    /* request에서는 version과 model_path를 알 수 없다. */
     /* TODO version?? */
     //int version;
+    string model_path_;
 };
 
 /* inline없으면 multiple definition 됨.

@@ -30,6 +30,10 @@ bool Handles::AddHandle(const Model& model, SptrSN sn)
     /*
       mutlimap은 k-v가 완전히 같아도 들어가므로 체크 필요
     */
+    if (sn == nullptr){
+        return false;
+    }
+
     auto range = update_handles_.equal_range(model);
     for(auto i = range.first; i != range.second; i++){
         if (i->second->GetIpPort() == sn->GetIpPort()){
