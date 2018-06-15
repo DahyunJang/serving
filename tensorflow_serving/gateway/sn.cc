@@ -26,6 +26,16 @@ SN::SN(const string& ip_port)
     stub_ = PredictionService::NewStub(channel);
 }
 
+SN::SN(const string& ip_port, bool is_dummy)
+    :ip_port_(ip_port){
+    LOG(INFO) << "Construct Dummy SN :" << ip_port;
+    if (!is_dummy){
+        std::shared_ptr<Channel> channel =
+            grpc::CreateChannel(ip_port, grpc::InsecureChannelCredentials());
+
+        stub_ = PredictionService::NewStub(channel);
+    }
+}
 
 SN::~SN(){
     LOG(INFO) << "Destruct SN :" << this->ip_port_;
@@ -66,7 +76,7 @@ Status SN::UnloadModel(const Model& model)
     LOG(INFO) << "UnLoadModel " << model.DebugString();
     {
         mutex_lock l(mu_);
-        remove(models_.begin(), models_.end(), model);
+        models_.remove(model);
     }
     return Status::OK();
 }
@@ -74,7 +84,7 @@ Status SN::UnloadModel(const Model& model)
 /* sn 제거로 인한 모델 제거시/모니터에만 쓰여야 함. */
 /* 락 제어가 힘든 관계로 벡터를 다 복사한다.
  */
-const std::vector<Model> SN::GetModels() {
+const std::list<Model> SN::GetModels() {
     tf_shared_lock l(mu_);
     return models_;
 }

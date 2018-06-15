@@ -1,7 +1,7 @@
 #ifndef GATEWAY_SN_POOL_H_
 #define GATEWAY_SN_POOL_H_
 
-#include <vector>
+#include <list>
 #include <algorithm>
 
 
@@ -35,7 +35,7 @@ public:
 
 private:
     mutex mu_;
-    std::vector<SptrSN> sp_sns_
+    std::list<SptrSN> sp_sns_
         GUARDED_BY(mu_);
 
 };
