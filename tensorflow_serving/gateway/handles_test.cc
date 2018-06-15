@@ -80,6 +80,7 @@ namespace serving{
         EXPECT_EQ(handles.RemoveHandle(model1), true);
         EXPECT_EQ(handles.RemoveHandle(model1,nullptr), true);
         EXPECT_EQ(handles.AddHandle(model1, sn2), true);
+
     }
 
 
@@ -104,11 +105,15 @@ namespace serving{
 
         EXPECT_EQ(handles.GetSN(model1), nullptr);
         EXPECT_EQ(handles.GetSN(model2), nullptr);
+        LOG(INFO) << handles.DebugString();
         handles.UpdateHandle();
+        LOG(INFO) << handles.DebugString();
 
         EXPECT_EQ(handles.GetSN(model1), sn2); // last inserted
         EXPECT_EQ(handles.GetSN(model2), sn1);
         EXPECT_EQ(handles.GetSN(model2)->DebugString(), sn1->DebugString());
+
+
     }
 
 }

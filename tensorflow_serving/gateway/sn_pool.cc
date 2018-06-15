@@ -5,11 +5,12 @@ namespace serving{
 
 string SNPool::DebugString() const
 {
-    string ret = "";
+    string ret = "{SNPool: ";
     for (auto sp_sn :sp_sns_){
-        ret = strings::StrCat(ret, sp_sn->DebugString());
+        ret = strings::StrCat(ret, sp_sn->DebugString(), ", ");
     }
 
+    ret = strings::StrCat(ret, "}");
     return ret;
 }
 
@@ -37,24 +38,13 @@ SptrSN SNPool::CreateSN(const string& ip_port)
 void SNPool::DestroySN(const string& ip_port)
 {
     mutex_lock l(mu_);
-
-    LOG(INFO) << "DestroySN :" << ip_port;
-    LOG(INFO) << "DestroySN size:" << sp_sns_.size();
-
     sp_sns_.remove_if([&ip_port] (const SptrSN& sp_cand){
             return sp_cand->GetIpPort() == ip_port;});
-
-    LOG(INFO) << "DestroySN size:" << sp_sns_.size();
-
 }
 
 
 const SptrSN SNPool::GetSN(const string& ip_port) {
     mutex_lock l(mu_);
-
-    LOG(INFO) << "GetSN :" << ip_port;
-    LOG(INFO) << "GET size:" << sp_sns_.size();
-
     auto iter = std::find_if(sp_sns_.begin(), sp_sns_.end(),
                         [&ip_port] (const SptrSN& sp_cand){
                                  LOG(INFO) << sp_cand->DebugString();
@@ -64,8 +54,6 @@ const SptrSN SNPool::GetSN(const string& ip_port) {
     if (iter == sp_sns_.end()){
         return nullptr;
     }
-
-    LOG(INFO) << "GetSN End : " << (*iter)->DebugString();
     return *iter;
 }
 

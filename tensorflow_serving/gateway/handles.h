@@ -19,6 +19,8 @@ using HandleMap = std::unordered_multimap<Model, SptrSN, ModelHash>;
 class Handles{
 public:
 
+    string DebugString() const;
+
     bool AddHandle(const Model& model, SptrSN sn)
         LOCKS_EXCLUDED(mu_update_);
 

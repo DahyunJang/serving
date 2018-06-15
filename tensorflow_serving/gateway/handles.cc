@@ -4,6 +4,25 @@
 namespace tensorflow {
 namespace serving{
 
+string Handles::DebugString() const
+{
+    string ret = "{{update_handles: ";
+    for (auto handle :update_handles_){
+        ret = strings::StrCat(ret, handle.first.DebugString(),
+                              handle.second->DebugString(), ", ");
+    }
+
+    ret = strings::StrCat(ret, "}, {read_handles: ");
+
+    for (auto handle :read_handles_){
+        ret = strings::StrCat(ret, handle.first.DebugString(),
+                              handle.second->DebugString(), ", ");
+    }
+
+    ret = strings::StrCat(ret, "}}");
+    return ret;
+}
+
 bool Handles::AddHandle(const Model& model, SptrSN sn)
 {
     mutex_lock l(mu_update_);

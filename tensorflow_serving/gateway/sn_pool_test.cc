@@ -69,6 +69,7 @@ TEST(SnPool, simpleDestroy1) {
     EXPECT_EQ(sn_pool.GetSN(ip_port1), nullptr);
     sn_pool.DestroySN(ip_port3);
 
+    sn_pool.DebugString();
 }
 
 }
